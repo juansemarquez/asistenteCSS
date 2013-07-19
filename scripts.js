@@ -54,6 +54,88 @@ function agregar(valor) {
 		quitar(principio);	
 	}
 }
+/*Funciones de fondo */
+function habilitar_color_fondo() {
+	if(document.getElementById("color_fondo").value!='Sin especificar') {
+		document.getElementById("transparencia_fondo").disabled=false;
+		document.getElementById("generar_fondo").disabled=false;	
+	}
+	else {
+		document.getElementById("transparencia_fondo").value=1;		
+		document.getElementById("transparencia_fondo").disabled=true;
+		if(document.getElementById("imagen_fondo").value=='Sin especificar' && document.getElementById("imagen_fondo").value.length==0) 
+		{ document.getElementById("generar_fondo").disabled=true;	}		
+	}
+}
+function habilitar_imagen_fondo() {
+	if(document.getElementById("imagen_fondo").value!='Sin especificar' && document.getElementById("imagen_fondo").value.length!=0) {
+		document.getElementById("repetir").disabled=false;
+		document.getElementById("ubic_fondo").disabled=false;
+		document.getElementById("fixed").disabled=false;
+		document.getElementById("generar_fondo").disabled=false;	
+	}
+	else {
+		document.getElementById("repetir").disabled=true;
+		document.getElementById("ubic_fondo").disabled=true;
+		document.getElementById("fixed").disabled=true;
+		if(document.getElementById("color_fondo").value=='Sin especificar') {		
+			document.getElementById("generar_fondo").disabled=false;
+		}	
+	}
+		
+}
+function fondo() {
+	quitar('background');
+	var cadena= "";
+	var aux = document.getElementById("color_fondo").value;
+	if (aux.length!=0) {
+		cadena = cadena + "background-color: rgb(" + aux + ");\n";	
+	}
+	/*else {
+		quitar('background-color:');	
+	}*/
+	var aux2 = document.getElementById("transparencia_fondo").value;
+	if (aux2!=1 && aux2.length!=0) {
+		cadena = cadena + "background-color: rgba(" + aux+ "," + aux2 + ");\n"; 	
+	}
+	/*else {
+		quitar('background-color: rgba');
+	}	*/
+	aux = document.getElementById("imagen_fondo").value;
+	if (aux.length != 0) {
+		cadena = cadena + "background-image: url('" + aux + "');\n";
+	}
+	else {
+		/*quitar('background-image:');
+		quitar('background_repeat:');
+		quitar("background-position:");
+		quitar('background-attachment');*/
+		document.getElementById("repetir").value='nada';
+		document.getElementById("ubic_fondo").value='nada';
+		document.getElementById("fixed").checked=true;
+	}
+	aux = document.getElementById("repetir").value;
+	if (aux != "nada") {
+		cadena = cadena + "background-repeat: " + aux + ";\n";	
+	}
+	/*else {
+		quitar('background_repeat:');
+	}*/
+	aux = document.getElementById("ubic_fondo").value;
+	if (aux != "nada") {
+		cadena = cadena + "background-position: " + aux + ";\n";	
+	}
+	/*else {
+		quitar("background-position:");
+	}*/
+	if(document.getElementById("fixed").checked==false) {
+		cadena = cadena + "background-attachment: fixed;\n";
+	}
+	/*else	{
+		quitar('background-attachment');	
+	}*/
+	agregar(cadena);
+}
 function quitarExacto(cadena)
 {
 	// TODO:

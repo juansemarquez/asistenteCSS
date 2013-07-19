@@ -97,6 +97,40 @@ function unidades(nombreSelect) {
         </fieldset>
         
     </section>
+    <section id="fondo" class="tab">
+      <h3>Fondo</h3>
+    	<label for="color_fondo">Color: </label>
+		<span id="muestra_color_fondo" onclick="colorPicker(this);" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		<input id="color_fondo" onclick="colorPicker(this); habilitar_color_fondo();" readonly value="Sin especificar"><br>
+		<label for="transparencia_fondo">Transparente (0)</label>
+		<input id="transparencia_fondo" type="range" min="0" max="1" value="1" step="0.01" disabled><label for="transparencia_fondo">Opaco (1)</label><br>
+		<label for="imagen_fondo">Imagen de fondo (respetar mayúsculas y minúsculas)</label>		
+		<input id="imagen_fondo" value="Sin especificar" onkeyup="habilitar_imagen_fondo();"><br>
+		<label for="repetir">Repetir:</label>
+		<select id="repetir" disabled>
+			<option value="nada">Sin especificar</option>
+			<option value="none">No repetir</option>
+			<option value="repeat-x">Horizontalmente</option>
+			<option value="repeat-y">Verticalmente</option>	
+			<option value="repeat">Horizontal y verticalmente</option>			
+		</select><br>
+		<label for="ubic_fondo">Ubicación del fondo:</label>
+			<select id="ubic_fondo" disabled>
+				<option value="nada">No especificar</option>
+				<option value="left top">Arriba a la izquierda</option>
+				<option value="left center">Al medio a la izquierda</option>
+				<option value="left bottom">Abajo a la izquierda</option>
+				<option value="center top">Arriba al medio</option>
+				<option value="center center">Centrado (horiz y vert)</option>
+				<option value="center bottom">Abajo al medio</option>
+				<option value="right top">Arriba a la derecha</option>
+				<option value="right center">Al medio a la derecha</option>
+				<option value="right bottom">Abajo a la derecha</option>
+			</select><br>
+			<input type="checkbox" id="fixed" checked disabled>
+			<label for="fixed">La imagen se desplaza con la página</label><br>	
+		<button onclick="fondo()" disabled id="generar_fondo">Generar código</button>		
+    </section>
 </section>
 <section id="salida">
     <h2>Código generado:</h2>
