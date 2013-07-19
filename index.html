@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es-ar">
+<head>
+<meta charset="utf-8">
+<title>Asistente CSS</title>
+<link href="estilo.css" rel="stylesheet">
+<script>
+function unidades(nombreSelect) {
+	document.write("<select id='" + nombreSelect + "_unidades'>");
+	document.write("<option value='px'>Píxeles (px)</option>");
+	document.write("<option value='em'>Tamaño de la \"m\" (em)</option>");
+	document.write("<option value='%'>Porcentaje (%)</option>");
+	document.write("<option value='pt'>Puntos (pt)</option>");
+	document.write("<option value='cm'>Centímetros (cm)</option>");
+	document.write("<option value='in'>Pulgadas (in)</option>");
+	document.write("<option value='mm'>Milímetros (mm)</option>");	
+   document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
+   document.write("<select>");
+}
+</script>
+</head>
+<body>
+<header>
+    <h1>Asistente CSS</h1>
+</header>
+<article>
+<section id="seleccionar">
+    <h2>Seleccionar las propiedades</h2>
+    <section id="texto" class="tab">
+    	  <h3>Texto</h3>
+        <label for="tipografia tipog_pers">Tipografía: </label>
+        <select id="tipografia" onchange="habilitarPersonalizado(this,document.getElementById('tipog_pers'))">
+            <option value="nada">Sin especificar</option>
+            <option value="serif">Serif</option>
+            <option value="sans-serif">Sans-Serif</option>
+            <option value="monospace">Monospace</option>
+            <option value="personal">Personalizado</option>                
+        </select>
+        <input id="tipog_pers" readonly>
+        <button onclick='agregar("font-family: " + document.getElementById("tipog_pers").value + ";\n")' disabled id="boton_tipog">Generar código</button><br>
+		  
+		  <label for="tamanoTexto tamanoTexto_unidades">Tamaño de texto: </label>
+		  <input type="number" id="tamanoTexto" onkeyup="habilitarBoton(this, document.getElementById('boton_tamano'))">
+		  <script>unidades("tamanoTexto")</script>
+		  <button onclick="agregar('font-size: ' + tamanoTexto.value + tamanoTexto_unidades.value + ';\n')" disabled id="boton_tamano">Generar código</button><br>
+		  
+		  <label for="altLinea altLinea_unidades">Altura de línea: </label>
+		  <input type="number" id="altLinea" onkeyup="habilitarBoton(this, document.getElementById('boton_altLinea'))">
+		  <script>unidades("altLinea")</script>
+		  <button onclick="agregar('line-height: ' + altLinea.value + altLinea_unidades.value + ';\n')" disabled id="boton_altLinea">Generar código</button><br>
+		  
+		  <label for="color_texto">Color: </label>
+		  <span id="muestra_color_texto" onclick="colorPicker(this)" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		  <input id="color_texto" onclick="colorPicker(this)" readonly><br>
+		  		    
+		  <label for="peso">"Peso":</label>        
+        <select id="peso" onchange="agregar('font-weight: ' + this.value + ';\n')">
+        		<option value="nada">Sin especificar</option>
+        		<option value="normal">Normal</option>
+        		<option value="bold">Negrita</option>
+        		<option value="bolder">Más oscuro</option>
+        		<option value="lighter">Más claro</option>		        		
+        </select><br>
+        
+		  <label for="estilo">Estilo: </label>        
+        <select id="estilo" onchange="agregar('font-style: ' + this.value + ';\n')">
+        		<option value="nada">Sin especificar</option>
+        		<option value="italic">Itálica ("cursiva")</option>        				        		
+        </select><br>
+        
+        <label for="may_min">Mayúsculas/Minúsculas: </label>        
+        <select id="may_min" onchange="agregar('text-transform: ' + this.value + ';\n')">
+        		<option value="nada">Sin especificar</option>
+        		<option value="lowercase">Minúsculas</option>        				        		
+        		<option value="uppercase">Mayúsculas</option>
+        		<option value="capitalize">Primer Letra Mayúscula</option>
+        </select><br>
+        
+        <label for="alineacion">Alineación: </label>        
+        <select id="alineacion" onchange="agregar('text-align: ' + this.value + ';\n')">
+        		<option value="nada">Sin especificar</option>
+        		<option value="left">Izquierda</option>        				        		
+        		<option value="right">Derecha</option>
+        		<option value="justify">Justificar</option>
+        </select><br>
+        
+        <fieldset id="text-decoration">        
+        <legend>Decoración de texto: </legend>		
+				<input type="checkbox" value="text-decoration: underline;" id="deco_2" onclick="opcionCheckbox(this)">
+				<label for="deco_2">Subrayado -- </label>
+				<input type="checkbox" value="text-decoration: overline;" id="deco_3" onclick="opcionCheckbox(this)">				
+				<label for="deco_3">Sobrerayado -- </label>
+				<input type="checkbox" value="text-decoration: blink;" id="deco_4" onclick="opcionCheckbox(this)">
+				<label for="deco_4">Parpadear (¡queda feo!) -- </label>
+				<input type="checkbox" value="text-decoration: line-through;" id="deco_5" onclick="opcionCheckbox(this)">
+				<label for="deco_5">Tachado</label>				        
+        </fieldset>
+        
+    </section>
+</section>
+<section id="salida">
+    <h2>Código generado:</h2>
+    <textarea id="codigo" cols="80" rows="10"></textarea>
+</section>
+</article>
+<script src="scripts.js"></script>
+</body>
+</html>
