@@ -136,6 +136,16 @@ function fondo() {
 	}*/
 	agregar(cadena);
 }
+
+/*Funciones de borde:*/
+function habilitarEsquinas(tipo) {
+	if(tipo.value=="nada") {
+			// TODO: TERMINAR
+	}
+	circ
+	elipse	
+}
+
 function quitarExacto(cadena)
 {
 	// TODO:

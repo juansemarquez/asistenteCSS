@@ -17,6 +17,107 @@ function unidades(nombreSelect) {
    document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
    document.write("<select>");
 }
+function habilitarBordesMultiples(esUnoSolo) {
+	if(esUnoSolo) {	
+		var cadena= "<label for=\"tipo_borde\">Tipo de borde:</label>\n";
+		cadena = cadena + "<select id=\"tipo_borde\">\n";
+			cadena = cadena + "<option value=\"nada\">No especificar</option>\n";
+			cadena = cadena + "<option value=\"none\">Sin borde</option>\n";
+			cadena = cadena + "<option value=\"hidden\">Oculto</option>\n";
+			cadena = cadena + "<option value=\"solid\">Sólido</option>\n";
+			cadena = cadena + "<option value=\"dotted\">Punteado</option>\n";
+			cadena = cadena + "<option value=\"dashed\">Línea de trazos</option>\n";
+			cadena = cadena + "<option value=\"double\">Doble</option>\n";
+			cadena = cadena + "<option value=\"groove\">Ranura</option>\n";
+			cadena = cadena + "<option value=\"ridge\">Cresta</option>\n";
+			cadena = cadena + "<option value=\"inset\">\"Inset\"</option>\n";
+			cadena = cadena + "<option value=\"outset\">\"Outset\"</option>\n";
+		cadena = cadena + "</select><br>\n";
+		cadena = cadena + "<label for=\"tamanoBorde tamanoBorde_unidades\">Grosor del borde: </label>\n";
+		cadena = cadena + "<input type=\"number\" id=\"tamanoBorde\">\n";
+		cadena = cadena + "<select id=\"tamanoBorde_unidades\">\n";
+		cadena = cadena + "<option value='px'>Píxeles (px)</option>\n";
+		cadena = cadena + "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
+		cadena = cadena + "<option value='%'>Porcentaje (%)</option>\n";
+		cadena = cadena + "<option value='pt'>Puntos (pt)</option>\n";
+		cadena = cadena + "<option value='cm'>Centímetros (cm)</option>\n";
+		cadena = cadena + "<option value='in'>Pulgadas (in)</option>\n";
+		cadena = cadena + "<option value='mm'>Milímetros (mm)</option>\n";
+   	cadena = cadena + "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
+   	cadena = cadena + "<select>\n		";
+		cadena = cadena + "<label for=\"color_borde\">Color: </label>\n";
+		cadena = cadena + "<span id=\"muestra_color_borde\" onclick=\"colorPicker(this);\" style=\"border: 1px solid black;\">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n";
+		cadena = cadena + "<input id=\"color_borde\" onclick=\"colorPicker(this);\" readonly value=\"Sin especificar\"><br>\n";
+		cadena = cadena + "<label for=\"transparencia_borde\">Transparente (0)</label>\n";
+		cadena = cadena + "<input id=\"transparencia_borde\" type=\"range\" min=\"0\" max=\"1\" value=\"1\" step=\"0.01\">\n";
+		cadena = cadena + "<label for=\"transparencia_borde\">Opaco (1)</label><br>\n";
+		cadena = cadena + "<label for=\"tipo_esquina\">Tipo de esquinas:</label>\n";
+		cadena = cadena + "<select id=\"tipo_esquina\" onselect=\"habilitarEsquinas(this)\">\n";
+		cadena = cadena + "	<option value=\"nada\">Ángulo recto</option>\n";
+		cadena = cadena + "	<option value=\"circ\">Circular</option>\n";
+		cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
+		cadena = cadena + "</select>\n";
+		cadena = cadena + "<label for=\"radio radio2\">Radios: </label>\n";
+		cadena = cadena + "<input type=\"number\" id=\"radio\" disabled><input type=\"number\" id=\"radio2\" disabled>\n";
+		cadena = cadena + "<button onclick=\"generarBordes(1)\">Generar código</button>";
+		document.getElementById("cantidadDeBordes").innerHTML=cadena;
+	}
+	else {
+		var cadena="";
+		var i;
+		for(var j=1;j<5;j=j+1) {
+			if(j==1) {i="ARRIBA";}
+			if(j==2) {i="DERECHA";}
+			if(j==3) {i="ABAJO";}
+			if(j==4) {i="IZQUIERDA";}
+			cadena = cadena + "<fieldset><legend>" + i + "</legend>\n";
+			cadena = cadena + "<label for=\"tipo_borde" + i + "\">Tipo de borde:</label>\n";
+			cadena = cadena + "<select id=\"tipo_borde" + i + "\">\n";
+			cadena = cadena + "<option value=\"nada\">No especificar</option>\n";
+			cadena = cadena + "<option value=\"none\">Sin borde</option>\n";
+			cadena = cadena + "<option value=\"hidden\">Oculto</option>\n";
+			cadena = cadena + "<option value=\"solid\">Sólido</option>\n";
+			cadena = cadena + "<option value=\"dotted\">Punteado</option>\n";
+			cadena = cadena + "<option value=\"dashed\">Línea de trazos</option>\n";
+			cadena = cadena + "<option value=\"double\">Doble</option>\n";
+			cadena = cadena + "<option value=\"groove\">Ranura</option>\n";
+			cadena = cadena + "<option value=\"ridge\">Cresta</option>\n";
+			cadena = cadena + "<option value=\"inset\">\"Inset\"</option>\n";
+			cadena = cadena + "<option value=\"outset\">\"Outset\"</option>\n";
+		cadena = cadena + "</select><br>\n";
+		cadena = cadena + "<label for=\"tamanoBorde" + i + " tamanoBorde_unidades" + i + "\">Grosor del borde: </label>\n";
+		cadena = cadena + "<input type=\"number\" id=\"tamanoBorde" + i + "\">\n";
+		cadena = cadena + "<select id=\"tamanoBorde_unidades" + i + "\">\n";
+		cadena = cadena + "<option value='px'>Píxeles (px)</option>\n";
+		cadena = cadena + "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
+		cadena = cadena + "<option value='%'>Porcentaje (%)</option>\n";
+		cadena = cadena + "<option value='pt'>Puntos (pt)</option>\n";
+		cadena = cadena + "<option value='cm'>Centímetros (cm)</option>\n";
+		cadena = cadena + "<option value='in'>Pulgadas (in)</option>\n";
+		cadena = cadena + "<option value='mm'>Milímetros (mm)</option>\n";
+   	cadena = cadena + "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
+   	cadena = cadena + "<select>\n		";
+		cadena = cadena + "<label for=\"color_borde" + i + "\">Color: </label>\n";
+		cadena = cadena + "<span id=\"muestra_color_borde" + i + "\" onclick=\"colorPicker(this);\" style=\"border: 1px solid black;\">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n";
+		cadena = cadena + "<input id=\"color_borde" + i + "\" onclick=\"colorPicker(this);\" readonly value=\"Sin especificar\"><br>\n";
+		cadena = cadena + "<label for=\"transparencia_borde" + i + "\">Transparente (0)</label>\n";
+		cadena = cadena + "<input id=\"transparencia_borde" + i + "\" type=\"range\" min=\"0\" max=\"1\" value=\"1\" step=\"0.01\">\n";
+		cadena = cadena + "<label for=\"transparencia_borde" + i + "\">Opaco (1)</label><br>\n";
+		cadena = cadena + "<label for=\"tipo_esquina" + i + "\">Tipo de esquinas:</label>\n";
+		cadena = cadena + "<select id=\"tipo_esquina" + i + "\" onselect=\"habilitarEsquinas(this)\">\n";
+		cadena = cadena + "	<option value=\"nada\">Ángulo recto</option>\n";
+		cadena = cadena + "	<option value=\"circ\">Circular</option>\n";
+		cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
+		cadena = cadena + "</select>\n";
+		cadena = cadena + "<label for=\"radio" + i + " radio2" + i + "\">Radios: </label>\n";
+		cadena = cadena + "<input type=\"number\" id=\"radio" + i + "\" disabled>";
+		cadena = cadena + "<input type=\"number\" id=\"radio2" + i + "\" disabled>\n</fieldset>\n";			
+		}	
+		cadena = cadena + "<button onclick=\"generarBordes(4)\">Generar código</button>";
+		document.getElementById("cantidadDeBordes").innerHTML=cadena;
+	}
+}
+
 </script>
 </head>
 <body>
@@ -130,6 +231,14 @@ function unidades(nombreSelect) {
 			<input type="checkbox" id="fixed" checked disabled>
 			<label for="fixed">La imagen se desplaza con la página</label><br>	
 		<button onclick="fondo()" disabled id="generar_fondo">Generar código</button>		
+    </section>
+    
+    <section id="borde" class="tab">
+		<h3>Bordes</h3>
+		<input id="cuatroBordes" type="checkbox" onclick="habilitarBordesMultiples(this.checked)">
+		<label for="cuatroBordes">Los 4 bordes son iguales</label><br>
+		<div id="cantidadDeBordes"></div>
+		<script>habilitarBordesMultiples(true);</script>						
     </section>
 </section>
 <section id="salida">
