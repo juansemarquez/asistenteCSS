@@ -138,12 +138,22 @@ function fondo() {
 }
 
 /*Funciones de borde:*/
-function habilitarEsquinas(tipo) {
-	if(tipo.value=="nada") {
-			// TODO: TERMINAR
+function habilitarEsquinas(tipo, lugar) {
+	var ident= "radio" + lugar; 
+	var ident2= "radio2" + lugar;		
+	if (tipo.value=="nada") {			
+			document.getElementById(ident).disabled=true;
+			document.getElementById(ident2).disabled=true;
 	}
-	circ
-	elipse	
+	else if (tipo.value=="circ")
+	{
+			document.getElementById(ident).disabled=false;
+			document.getElementById(ident2).disabled=true;	
+	}
+	else if (tipo.value=="elipse") {
+			document.getElementById(ident).disabled=false;
+			document.getElementById(ident2).disabled=false;	
+	}
 }
 
 function quitarExacto(cadena)
