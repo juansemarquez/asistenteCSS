@@ -142,12 +142,15 @@ function habilitarEsquinas(tipo, lugar) {
 	var ident= "radio" + lugar; 
 	var ident2= "radio2" + lugar;		
 	if (tipo.value=="nada") {			
-			document.getElementById(ident).disabled=true;
+			document.getElementById(ident).value='';			
+			document.getElementById(ident).disabled=true;			
+			document.getElementById(ident2).value='';			
 			document.getElementById(ident2).disabled=true;
 	}
 	else if (tipo.value=="circ")
 	{
 			document.getElementById(ident).disabled=false;
+			document.getElementById(ident2).value='';			
 			document.getElementById(ident2).disabled=true;	
 	}
 	else if (tipo.value=="elipse") {
@@ -155,6 +158,70 @@ function habilitarEsquinas(tipo, lugar) {
 			document.getElementById(ident2).disabled=false;	
 	}
 }
+function generarBordes(cant) {	
+	for (var i=1; i<=cant; i=i+1) {				
+		var pref;
+		var pos;	
+		var cadena = '';	
+		if (cant==1) {
+			pref='border-';
+			pos='';
+		}
+		else if(i==1) {
+			pref= 'border-top-';
+			pos='ARRIBA';		
+		}
+		else if(i==2) {
+			pref= 'border-right-';
+			pos='DERECHO';		
+		}
+		else if(i==3) {
+			pref= 'border-bottom-';
+			pos='ABAJO';		
+		}
+		else if(i==4) {
+			pref= 'border-left-';
+			pos='IZQUIERDA';		
+		}
+		else { return; }
+		if(document.getElementById('tipo-borde' + pos).value=="nada") {
+			quitar(pref + 'style:');				
+		}
+		else {
+			cadena = cadena + pref + 'style: ' + document.getElementById('tipo-borde' + pos).value + ';\n';		
+		}
+		if(document.getElementById('tamanoBorde' + pos).value.length == 0) {
+			quitar(pref + 'width:');			
+		}
+		else {
+			cadena = cadena + pref + 'width: ' + document.getElementById('tamanoBorde' + pos).value + document.getElementById('tamanoBorde_unidades' + pos).value + ';\n';				
+		}
+		if(document.getElementById('color_borde' + pos).value == 'Sin especificar') {
+			quitar(pref + 'color:');			
+		}
+		else {
+			cadena = cadena + pref + 'color: ' + document.getElementById('color' + pos).value + pos).value + ';\n';				
+		}
+		if(document.getElementById('transparencia_borde' + pos).value == 1 || document.getElementById('transparencia_borde' + pos).value.length == 0) {
+			quitar(pref + 'color: rgba(');			
+		}
+		else {
+			//TODO : Corregir.			
+			cadena = cadena + pref + 'color: rgba(' + document.getElementById('color' + pos).value + pos).value + ');\n';				
+		}
+
+		if(document.getElementById('radio' + pos).disabled ||document.getElementById('radio2' + pos).disabled||document.getElementById('radio'+pos).value.length == 0) {
+			//TODO : quitar(pref + '-radius:');			
+		}
+		/* TODO
+		else {
+			cadena = cadena + pref + 'color: ' + document.getElementById('color' + pos).value + pos).value + ';\n';				
+		}
+		*/
+	}	
+		
+}
+
 
 function quitarExacto(cadena)
 {
