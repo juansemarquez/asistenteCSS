@@ -158,11 +158,11 @@ function habilitarEsquinas(tipo, lugar) {
 			document.getElementById(ident2).disabled=false;	
 	}
 }
-function generarBordes(cant) {	
+function generarBordes(cant) {
+	var cadena = '';	
 	for (var i=1; i<=cant; i=i+1) {				
 		var pref;
 		var pos;	
-		var cadena = '';	
 		if (cant==1) {
 			pref='border-';
 			pos='';
@@ -184,11 +184,11 @@ function generarBordes(cant) {
 			pos='IZQUIERDA';		
 		}
 		else { return; }
-		if(document.getElementById('tipo-borde' + pos).value=="nada") {
+		if(document.getElementById('tipo_borde' + pos).value=="nada") {
 			quitar(pref + 'style:');				
 		}
 		else {
-			cadena = cadena + pref + 'style: ' + document.getElementById('tipo-borde' + pos).value + ';\n';		
+			cadena = cadena + pref + 'style: ' + document.getElementById('tipo_borde' + pos).value + ';\n';		
 		}
 		if(document.getElementById('tamanoBorde' + pos).value.length == 0) {
 			quitar(pref + 'width:');			
@@ -200,27 +200,69 @@ function generarBordes(cant) {
 			quitar(pref + 'color:');			
 		}
 		else {
-			cadena = cadena + pref + 'color: ' + document.getElementById('color' + pos).value + pos).value + ';\n';				
+			cadena = cadena + pref + 'color: ' + document.getElementById('color_borde' + pos).value + ';\n';				
 		}
 		if(document.getElementById('transparencia_borde' + pos).value == 1 || document.getElementById('transparencia_borde' + pos).value.length == 0) {
 			quitar(pref + 'color: rgba(');			
 		}
 		else {
 			//TODO : Corregir.			
-			cadena = cadena + pref + 'color: rgba(' + document.getElementById('color' + pos).value + pos).value + ');\n';				
+			cadena = cadena + pref + 'color: rgba(' + document.getElementById('transparencia_borde' + pos).value + ');\n';				
 		}
 
 		if(document.getElementById('radio' + pos).disabled ||document.getElementById('radio2' + pos).disabled||document.getElementById('radio'+pos).value.length == 0) {
-			//TODO : quitar(pref + '-radius:');			
+			quitar(pref + '-radius:');			
 		}
 		/* TODO
 		else {
 			cadena = cadena + pref + 'color: ' + document.getElementById('color' + pos).value + pos).value + ';\n';				
 		}
 		*/
+				
 	}	
-		
+		agregar(cadena);
+		document.getElementById("muestra_bordes").style = cadena;
 }
+function generarEsquinas(cant) {
+	 //TODO: Construir especialmente
+	 // quitar('radius');    
+    var cadena = '';	
+	 for (var i=1; i<=cant; i=i+1) {				
+        var p;
+        var pref;
+        var pos;
+        if (cant==1) {
+        	    pref='border-radius: ';
+        	    pos='';        	    
+        	}
+        	else if(i==1) {
+			    pref= 'border-top-right-radius: ';
+			    pos='-top-right';
+			}
+		   else if(i==2) {
+		   	pref= 'border-bottom-right-radius: ';
+		   	pos='-bottom-right';
+		   }
+		   else if(i==3) {
+		   	pref= 'border-bottom-left-radius: ';
+		   	pos='-bottom-left';
+		   }
+		   else if(i==4) {
+		   	pref= 'border-top-left-radius: ';
+		   	pos='-top-left';
+		   }
+		   if(document.getElementById("tipo_esquina"+pos).value=="circ") {
+		       cadena = cadena + pref + document.getElementById("radio" + pos).value + "px;\n";		       		   
+		   }
+		   else if(document.getElementById("tipo_esquina"+pos).value=="elipse") {
+			    cadena = cadena + pref + document.getElementById("radio" + pos).value +'px '+ document.getElementById("radio2" + pos).value + "px;\n";	
+		   }		   
+    }
+    agregar(cadena);
+    document.getElementById("muestra_bordes").style = cadena;
+}
+
+
 
 
 function quitarExacto(cadena)

@@ -17,8 +17,8 @@ function unidades(nombreSelect) {
    document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
    document.write("<select>");
 }
-function habilitarBordesMultiples(esUnoSolo) {
-	if(esUnoSolo) {	
+function habilitarBordesMultiples(esUnoSolo) {	
+	if(esUnoSolo) {			
 		var cadena= "<label for=\"tipo_borde\">Tipo de borde:</label>\n";
 		cadena = cadena + "<select id=\"tipo_borde\">\n";
 			cadena = cadena + "<option value=\"nada\">No especificar</option>\n";
@@ -50,15 +50,7 @@ function habilitarBordesMultiples(esUnoSolo) {
 		cadena = cadena + "<input id=\"color_borde\" onclick=\"colorPicker(this);\" readonly value=\"Sin especificar\"><br>\n";
 		cadena = cadena + "<label for=\"transparencia_borde\">Transparente (0)</label>\n";
 		cadena = cadena + "<input id=\"transparencia_borde\" type=\"range\" min=\"0\" max=\"1\" value=\"1\" step=\"0.01\">\n";
-		cadena = cadena + "<label for=\"transparencia_borde\">Opaco (1)</label><br>\n";
-		cadena = cadena + "<label for=\"tipo_esquina\">Tipo de esquinas:</label>\n";
-		cadena = cadena + "<select id=\"tipo_esquina\" onchange=\"habilitarEsquinas(this,'')\">\n";
-		cadena = cadena + "	<option value=\"nada\">Ángulo recto</option>\n";
-		cadena = cadena + "	<option value=\"circ\">Circular</option>\n";
-		cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
-		cadena = cadena + "</select>\n";
-		cadena = cadena + "<label for=\"radio radio2\">Radios: </label>\n";
-		cadena = cadena + "<input type=\"number\" id=\"radio\" disabled><input type=\"number\" id=\"radio2\" disabled>\n";
+		cadena = cadena + "<label for=\"transparencia_borde\">Opaco (1)</label><br>\n";		
 		cadena = cadena + "<button onclick=\"generarBordes(1)\">Generar código</button>";
 		document.getElementById("cantidadDeBordes").innerHTML=cadena;
 	}
@@ -102,21 +94,49 @@ function habilitarBordesMultiples(esUnoSolo) {
 		cadena = cadena + "<input id=\"color_borde" + i + "\" onclick=\"colorPicker(this);\" readonly value=\"Sin especificar\"><br>\n";
 		cadena = cadena + "<label for=\"transparencia_borde" + i + "\">Transparente (0)</label>\n";
 		cadena = cadena + "<input id=\"transparencia_borde" + i + "\" type=\"range\" min=\"0\" max=\"1\" value=\"1\" step=\"0.01\">\n";
-		cadena = cadena + "<label for=\"transparencia_borde" + i + "\">Opaco (1)</label><br>\n";
-		cadena = cadena + "<label for=\"tipo_esquina" + i + "\">Tipo de esquinas:</label>\n";
-		cadena = cadena + "<select id=\"tipo_esquina" + i + "\" onchange=\"habilitarEsquinas(this,'"+i+"')\">\n";
+		cadena = cadena + "<label for=\"transparencia_borde" + i + "\">Opaco (1)</label><br>\n</fieldset>\n";					
+		}	
+		cadena = cadena + "</fieldset>\n<button onclick=\"generarBordes(4)\">Generar código</button>";
+		document.getElementById("cantidadDeBordes").innerHTML=cadena;
+	}
+}
+function habilitarEsquinasMultiples(esUnaSola) {
+	var cadena="";
+	//TODO: Hay que hacerlo especialmente: 
+	// quitar("radius");
+	if(esUnaSola) {
+		cadena = cadena + "<label for=\"tipo_esquina\">Tipo de esquinas:</label>\n";
+		cadena = cadena + "<select id=\"tipo_esquina\" onchange=\"habilitarEsquinas(this,'')\">\n";
 		cadena = cadena + "	<option value=\"nada\">Ángulo recto</option>\n";
 		cadena = cadena + "	<option value=\"circ\">Circular</option>\n";
 		cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
 		cadena = cadena + "</select>\n";
-		cadena = cadena + "<label for=\"radio" + i + " radio2" + i + "\">Radios: </label>\n";
-		cadena = cadena + "<input type=\"number\" id=\"radio" + i + "\" disabled>";
-		cadena = cadena + "<input type=\"number\" id=\"radio2" + i + "\" disabled>\n</fieldset>\n";			
-		}	
-		cadena = cadena + "<button onclick=\"generarBordes(4)\">Generar código</button>";
-		document.getElementById("cantidadDeBordes").innerHTML=cadena;
+		cadena = cadena + "<label for=\"radio radio2\">Radios: </label>\n";
+		cadena = cadena + "<input type=\"number\" id=\"radio\" disabled><input type=\"number\" id=\"radio2\" disabled>\n";
+      cadena=cadena+"<button onclick=\"generarEsquinas(1)\">Generar esquinas</button>\n";
 	}
+	else {
+		var i;
+		for(var j=1;j<5;j=j+1) {
+			if(j==1) {i="-top-right";cadena=cadena+"<fieldset><legend>Superior derecho</legend>";}
+			if(j==2) {i="-bottom-right";cadena=cadena+"<fieldset><legend>Inferior derecho</legend>";}
+			if(j==3) {i="-bottom-left";cadena=cadena+"<fieldset><legend>Inferior izquierdo</legend>";}
+			if(j==4) {i="-top-left";cadena=cadena+"<fieldset><legend>Superior izquierdo</legend>";}			
+			cadena = cadena + "<label for=\"tipo_esquina" + i + "\">Tipo de esquinas:</label>\n";
+			cadena = cadena + "<select id=\"tipo_esquina" + i + "\" onchange=\"habilitarEsquinas(this,'"+i+"')\">\n";
+			cadena = cadena + "	<option value=\"nada\">Ángulo recto</option>\n";
+			cadena = cadena + "	<option value=\"circ\">Circular</option>\n";
+			cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
+			cadena = cadena + "</select>\n";
+			cadena = cadena + "<label for=\"radio" + i + " radio2" + i + "\">Radios: </label>\n";
+			cadena = cadena + "<input type=\"number\" id=\"radio" + i + "\" disabled>";
+			cadena = cadena + "<input type=\"number\" id=\"radio2" + i + "\" disabled><br>\n</fieldset>\n";
+		}
+		cadena=cadena+"<button onclick=\"generarEsquinas(4)\">Generar esquinas</button>\n";	
+	}	
+	document.getElementById("cantidadDeEsquinas").innerHTML = cadena;
 }
+	
 
 </script>
 </head>
@@ -239,6 +259,11 @@ function habilitarBordesMultiples(esUnoSolo) {
 		<label for="cuatroBordes">Los 4 bordes son iguales</label><br>
 		<div id="cantidadDeBordes"></div>
 		<script>habilitarBordesMultiples(true);</script>						
+		<input id="cuatroEsq" type="checkbox" onclick="quitar('border');habilitarEsquinasMultiples(this.checked)" checked>
+		<label for="cuatroEsq">Las 4 esquinas son iguales</label><br>
+		<div id="cantidadDeEsquinas"></div>
+		<script>habilitarEsquinasMultiples(true);</script>
+		<div id="muestra_bordes"></div>
     </section>
 </section>
 <section id="salida">
