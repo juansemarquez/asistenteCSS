@@ -136,8 +136,6 @@ function habilitarEsquinasMultiples(esUnaSola) {
 	}	
 	document.getElementById("cantidadDeEsquinas").innerHTML = cadena;
 }
-	
-
 </script>
 </head>
 <body>
@@ -158,24 +156,25 @@ function habilitarEsquinasMultiples(esUnaSola) {
             <option value="personal">Personalizado</option>                
         </select>
         <input id="tipog_pers" readonly>
-        <button onclick='agregar("font-family: " + document.getElementById("tipog_pers").value + ";\n")' disabled id="boton_tipog">Generar código</button><br>
+        <button onclick='quitar("font-family:");agregar("font-family: " + document.getElementById("tipog_pers").value + ";\n")' disabled id="boton_tipog">Generar código</button><br>
 		  
 		  <label for="tamanoTexto tamanoTexto_unidades">Tamaño de texto: </label>
 		  <input type="number" id="tamanoTexto" onkeyup="habilitarBoton(this, document.getElementById('boton_tamano'))">
 		  <script>unidades("tamanoTexto")</script>
-		  <button onclick="agregar('font-size: ' + tamanoTexto.value + tamanoTexto_unidades.value + ';\n')" disabled id="boton_tamano">Generar código</button><br>
+		  <button onclick="quitar('font-size')agregar('font-size: ' + tamanoTexto.value + tamanoTexto_unidades.value + ';\n')" disabled id="boton_tamano">Generar código</button><br>
 		  
 		  <label for="altLinea altLinea_unidades">Altura de línea: </label>
 		  <input type="number" id="altLinea" onkeyup="habilitarBoton(this, document.getElementById('boton_altLinea'))">
 		  <script>unidades("altLinea")</script>
-		  <button onclick="agregar('line-height: ' + altLinea.value + altLinea_unidades.value + ';\n')" disabled id="boton_altLinea">Generar código</button><br>
+		  <button onclick="quitar('line-height');agregar('line-height: ' + altLinea.value + altLinea_unidades.value + ';\n')" disabled id="boton_altLinea">Generar código</button><br>
 		  
+		  <!--TODO: -->
 		  <label for="color_texto">Color: </label>
 		  <span id="muestra_color_texto" onclick="colorPicker(this)" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
 		  <input id="color_texto" onclick="colorPicker(this)" readonly><br>
 		  		    
 		  <label for="peso">"Peso":</label>        
-        <select id="peso" onchange="agregar('font-weight: ' + this.value + ';\n')">
+        <select id="peso" onchange="quitar('font-weight:');agregar('font-weight: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
         		<option value="normal">Normal</option>
         		<option value="bold">Negrita</option>
@@ -184,13 +183,13 @@ function habilitarEsquinasMultiples(esUnaSola) {
         </select><br>
         
 		  <label for="estilo">Estilo: </label>        
-        <select id="estilo" onchange="agregar('font-style: ' + this.value + ';\n')">
+        <select id="estilo" onchange="quitar('font-style:');agregar('font-style: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
         		<option value="italic">Itálica ("cursiva")</option>        				        		
         </select><br>
         
         <label for="may_min">Mayúsculas/Minúsculas: </label>        
-        <select id="may_min" onchange="agregar('text-transform: ' + this.value + ';\n')">
+        <select id="may_min" onchange="quitar('text-transform:');agregar('text-transform: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
         		<option value="lowercase">Minúsculas</option>        				        		
         		<option value="uppercase">Mayúsculas</option>
@@ -198,7 +197,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
         </select><br>
         
         <label for="alineacion">Alineación: </label>        
-        <select id="alineacion" onchange="agregar('text-align: ' + this.value + ';\n')">
+        <select id="alineacion" onchange="quitar('text-align:');agregar('text-align: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
         		<option value="left">Izquierda</option>        				        		
         		<option value="right">Derecha</option>
@@ -218,13 +217,17 @@ function habilitarEsquinasMultiples(esUnaSola) {
         </fieldset>
         
     </section>
+    
     <section id="fondo" class="tab">
       <h3>Fondo</h3>
+    	
+		<!--TO DO: -->    	
     	<label for="color_fondo">Color: </label>
 		<span id="muestra_color_fondo" onclick="colorPicker(this);" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
 		<input id="color_fondo" onclick="colorPicker(this); habilitar_color_fondo();" readonly value="Sin especificar"><br>
 		<label for="transparencia_fondo">Transparente (0)</label>
 		<input id="transparencia_fondo" type="range" min="0" max="1" value="1" step="0.01" disabled><label for="transparencia_fondo">Opaco (1)</label><br>
+		
 		<label for="imagen_fondo">Imagen de fondo (respetar mayúsculas y minúsculas)</label>		
 		<input id="imagen_fondo" value="Sin especificar" onkeyup="habilitar_imagen_fondo();"><br>
 		<label for="repetir">Repetir:</label>

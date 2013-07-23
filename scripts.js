@@ -40,14 +40,14 @@ function opcionCheckbox(cb) {
 		agregar(cb.value + "\n");
 	}
 	else {
-		quitarExacto(cb.value + "\n");	
+		quitar(cb.value);	
 	}
 
 	
 }
 function agregar(valor) {
 	if(valor.indexOf("nada;\n")==-1) {
-	  	document.getElementById("codigo").innerHTML=document.getElementById("codigo").innerHTML+valor;
+	  	document.getElementById("codigo").value=document.getElementById("codigo").value+valor;
 	}
 	else {
 		var principio=valor.substr(0,(valor.indexOf(":")+1));
@@ -67,6 +67,7 @@ function habilitar_color_fondo() {
 		{ document.getElementById("generar_fondo").disabled=true;	}		
 	}
 }
+
 function habilitar_imagen_fondo() {
 	if(document.getElementById("imagen_fondo").value!='Sin especificar' && document.getElementById("imagen_fondo").value.length!=0) {
 		document.getElementById("repetir").disabled=false;
@@ -88,28 +89,28 @@ function fondo() {
 	quitar('background');
 	var cadena= "";
 	var aux = document.getElementById("color_fondo").value;
-	if (aux.length!=0) {
+	if (aux.length!=0 && aux != 'Sin especificar') {
 		cadena = cadena + "background-color: rgb(" + aux + ");\n";	
 	}
-	/*else {
+	else {
 		quitar('background-color:');	
-	}*/
+	}
 	var aux2 = document.getElementById("transparencia_fondo").value;
-	if (aux2!=1 && aux2.length!=0) {
+	if (aux2!=1 && aux2.length!=0 && aux.length!=0 && aux != 'Sin especificar') {
 		cadena = cadena + "background-color: rgba(" + aux+ "," + aux2 + ");\n"; 	
 	}
-	/*else {
+	else {
 		quitar('background-color: rgba');
-	}	*/
+	}
 	aux = document.getElementById("imagen_fondo").value;
 	if (aux.length != 0) {
 		cadena = cadena + "background-image: url('" + aux + "');\n";
 	}
 	else {
-		/*quitar('background-image:');
+		quitar('background-image:');
 		quitar('background_repeat:');
 		quitar("background-position:");
-		quitar('background-attachment');*/
+		quitar('background-attachment');
 		document.getElementById("repetir").value='nada';
 		document.getElementById("ubic_fondo").value='nada';
 		document.getElementById("fixed").checked=true;
@@ -118,22 +119,22 @@ function fondo() {
 	if (aux != "nada") {
 		cadena = cadena + "background-repeat: " + aux + ";\n";	
 	}
-	/*else {
+	else {
 		quitar('background_repeat:');
-	}*/
+	}
 	aux = document.getElementById("ubic_fondo").value;
 	if (aux != "nada") {
 		cadena = cadena + "background-position: " + aux + ";\n";	
 	}
-	/*else {
+	else {
 		quitar("background-position:");
-	}*/
+	}
 	if(document.getElementById("fixed").checked==false) {
 		cadena = cadena + "background-attachment: fixed;\n";
 	}
-	/*else	{
+	else	{
 		quitar('background-attachment');	
-	}*/
+	}
 	agregar(cadena);
 }
 
@@ -224,9 +225,8 @@ function generarBordes(cant) {
 		document.getElementById("muestra_bordes").style = cadena;
 }
 function generarEsquinas(cant) {
-	 //TODO: Construir especialmente
-	 // quitar('radius');    
-    var cadena = '';	
+	 quitar('radius');	 
+	 var cadena = '';	
 	 for (var i=1; i<=cant; i=i+1) {				
         var p;
         var pref;
@@ -250,31 +250,55 @@ function generarEsquinas(cant) {
 		   else if(i==4) {
 		   	pref= 'border-top-left-radius: ';
 		   	pos='-top-left';
-		   }
-		   if(document.getElementById("tipo_esquina"+pos).value=="circ") {
+		   }		   
+		   if(document.getElementById("tipo_esquina"+pos).value=="circ" && document.getElementById("radio" + pos).value.length!=0) {
 		       cadena = cadena + pref + document.getElementById("radio" + pos).value + "px;\n";		       		   
 		   }
-		   else if(document.getElementById("tipo_esquina"+pos).value=="elipse") {
+		   else if(document.getElementById("tipo_esquina"+pos).value=="elipse" && document.getElementById("radio" + pos).value !=0 && document.getElementById("radio2" + pos).value!=0) {
 			    cadena = cadena + pref + document.getElementById("radio" + pos).value +'px '+ document.getElementById("radio2" + pos).value + "px;\n";	
-		   }		   
+		   }	   	
     }
     agregar(cadena);
     document.getElementById("muestra_bordes").style = cadena;
 }
 
-
-
-
-function quitarExacto(cadena)
-{
-	// TODO:
-	//Quita "cadena" (exacta) del textarea id="codigo"	
-}
 function quitar(cadena)
-{
-	// TODO: 
-	//Quita el renglón que comienza con "cadena" del textarea id="codigo"	
+{	
+	//Quita el/los renglón/es que tenga/n "cadena" en el textarea id="codigo"
+	var regla;	
+	var nueva='';	
+	var anterior = document.getElementById("codigo").value;
+	//Convierto el contenido del textarea en un array, separando por \n	
+	var vector = anterior.split("\n");
+	//Recorro el array		
+	for (var i=0; i<vector.length; i++)
+	{
+		//Asigno el elemento en la variable regla
+		regla = vector[i];
+		//Si "cadena" no está en "regla", agrego la regla a la nueva cadena. 
+		if(regla.indexOf(cadena)==-1) {
+			nueva = nueva + regla;
+		}		
+	}
+	//Agrego saltos de línea:
+		//Primero reemplazo ; por zxc
+	var aux=nueva.replace(';','zxc');	
+	while (nueva!=aux) {		
+		nueva=aux;		
+		aux=nueva.replace(';','zxc');	
+		//alert('aux: '+aux+'\nnueva: '+nueva);
+	}
+		//Luego reemplazo zxc por ;\n
+	aux=nueva.replace('zxc',';\n');	
+	while (nueva!=aux) {		
+		nueva=aux;		
+		aux=nueva.replace('zxc',';\n');	
+		//alert('aux: '+aux+'\nnueva: '+nueva);
+	}
+	//"nueva" es el nuevo contenido del textarea.
+	document.getElementById("codigo").value = nueva;
 }
+
 function colorPicker(elemento) {
 	//TODO:	
 	//Buscar alguno hecho
@@ -283,5 +307,5 @@ function colorPicker(elemento) {
 	var colorDevuelto= 'rgb(150,150,150)';
 	elemento.value=colorDevuelto;	
 	document.getElementById("muestra_color_texto").style.backgroundColor=colorDevuelto;
-	agregar("color: "+ colorDevuelto + ";\n");
+	//agregar("color: "+ colorDevuelto + ";\n");
 }
