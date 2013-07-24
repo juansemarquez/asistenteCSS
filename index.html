@@ -46,13 +46,14 @@ function habilitarBordesMultiples(esUnoSolo) {
    	cadena = cadena + "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
    	cadena = cadena + "<select>\n		";
 		cadena = cadena + "<label for=\"color_borde\">Color: </label>\n";
-		cadena = cadena + "<span id=\"muestra_color_borde\" onclick=\"colorPicker(this);\" style=\"border: 1px solid black;\">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n";
-		cadena = cadena + "<input id=\"color_borde\" onclick=\"colorPicker(this);\" readonly value=\"Sin especificar\"><br>\n";
+		//cadena = cadena + "<span id=\"muestra_color_borde\" onclick=\"colorPicker(this);\" style=\"border: 1px solid black;\">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n";
+		cadena = cadena + "<input id=\"color_borde\" class=\"color\" value=\"Sin especificar\"><br>\n";
 		cadena = cadena + "<label for=\"transparencia_borde\">Transparente (0)</label>\n";
 		cadena = cadena + "<input id=\"transparencia_borde\" type=\"range\" min=\"0\" max=\"1\" value=\"1\" step=\"0.01\">\n";
 		cadena = cadena + "<label for=\"transparencia_borde\">Opaco (1)</label><br>\n";		
 		cadena = cadena + "<button onclick=\"generarBordes(1)\">Generar código</button>";
 		document.getElementById("cantidadDeBordes").innerHTML=cadena;
+		
 	}
 	else {
 		var cadena="";
@@ -90,8 +91,8 @@ function habilitarBordesMultiples(esUnoSolo) {
    	cadena = cadena + "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
    	cadena = cadena + "<select>\n		";
 		cadena = cadena + "<label for=\"color_borde" + i + "\">Color: </label>\n";
-		cadena = cadena + "<span id=\"muestra_color_borde" + i + "\" onclick=\"colorPicker(this);\" style=\"border: 1px solid black;\">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n";
-		cadena = cadena + "<input id=\"color_borde" + i + "\" onclick=\"colorPicker(this);\" readonly value=\"Sin especificar\"><br>\n";
+		//cadena = cadena + "<span id=\"muestra_color_borde" + i + "\" onclick=\"colorPicker(this);\" style=\"border: 1px solid black;\">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n";
+		cadena = cadena + "<input id=\"color_borde" + i + "\" class=\"color\" value=\"Sin especificar\"><br>\n";
 		cadena = cadena + "<label for=\"transparencia_borde" + i + "\">Transparente (0)</label>\n";
 		cadena = cadena + "<input id=\"transparencia_borde" + i + "\" type=\"range\" min=\"0\" max=\"1\" value=\"1\" step=\"0.01\">\n";
 		cadena = cadena + "<label for=\"transparencia_borde" + i + "\">Opaco (1)</label><br>\n</fieldset>\n";					
@@ -168,10 +169,9 @@ function habilitarEsquinasMultiples(esUnaSola) {
 		  <script>unidades("altLinea")</script>
 		  <button onclick="quitar('line-height');agregar('line-height: ' + altLinea.value + altLinea_unidades.value + ';\n')" disabled id="boton_altLinea">Generar código</button><br>
 		  
-		  <!--TODO: -->
 		  <label for="color_texto">Color: </label>
-		  <span id="muestra_color_texto" onclick="colorPicker(this)" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-		  <input id="color_texto" onclick="colorPicker(this)" readonly><br>
+		  <!--<span id="muestra_color_texto" onclick="colorPicker(this)" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+		  <input id="color_texto" class="color" onchange="quitarColor('color:');agregar('color: #'+this.value+';\n')"><br>
 		  		    
 		  <label for="peso">"Peso":</label>        
         <select id="peso" onchange="quitar('font-weight:');agregar('font-weight: ' + this.value + ';\n')">
@@ -221,10 +221,10 @@ function habilitarEsquinasMultiples(esUnaSola) {
     <section id="fondo" class="tab">
       <h3>Fondo</h3>
     	
-		<!--TO DO: -->    	
     	<label for="color_fondo">Color: </label>
-		<span id="muestra_color_fondo" onclick="colorPicker(this);" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-		<input id="color_fondo" onclick="colorPicker(this); habilitar_color_fondo();" readonly value="Sin especificar"><br>
+		<!-- <span id="muestra_color_fondo" onclick="colorPicker(this);" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span> -->
+		<input id="color_fondo" class="color {onImmediateChange:'colorFondoRGB(this);'}" onclick="habilitar_color_fondo();" value="Sin especificar"><br>
+		<input type="hidden" id="RGBFondo">
 		<label for="transparencia_fondo">Transparente (0)</label>
 		<input id="transparencia_fondo" type="range" min="0" max="1" value="1" step="0.01" disabled><label for="transparencia_fondo">Opaco (1)</label><br>
 		
@@ -258,14 +258,185 @@ function habilitarEsquinasMultiples(esUnaSola) {
     
     <section id="borde" class="tab">
 		<h3>Bordes</h3>
-		<input id="cuatroBordes" type="checkbox" onclick="habilitarBordesMultiples(this.checked)" checked>
+		<input id="cuatroBordes" type="checkbox" onclick="habilitarBordes(this.checked)" checked>
 		<label for="cuatroBordes">Los 4 bordes son iguales</label><br>
-		<div id="cantidadDeBordes"></div>
-		<script>habilitarBordesMultiples(true);</script>						
+		<!-- <div id="cantidadDeBordes"></div> -->
+		<script>//habilitarBordesMultiples(true);</script>						
+		<fieldset id="bordeUnico">
+			<legend>Los 4 bordes:</legend>
+			<label for="tipo_borde">Tipo de borde:</label>
+			<select id="tipo_borde">
+				<option value="nada">No especificar</option>
+				<option value="none">Sin borde</option>
+				<option value="hidden">Oculto</option>
+				<option value="solid">Sólido</option>
+				<option value="dotted">Punteado</option>
+				<option value="dashed">Línea de trazos</option>
+				<option value="double">Doble</option>
+				<option value="groove">Ranura</option>
+				<option value="ridge">Cresta</option>
+				<option value="inset">"Inset"</option>
+				<option value="outset">"Outset"</option>
+			</select><br>
+			<label for="tamanoBorde tamanoBorde_unidades">Grosor del borde: </label>
+			<input type="number" id="tamanoBorde">
+			<select id="tamanoBorde_unidades">
+				<option value='px'>Píxeles (px)</option>
+				<option value='em'>Tamaño de la "m" (em)</option>
+				<option value='%'>Porcentaje (%)</option>
+				<option value='pt'>Puntos (pt)</option>
+				<option value='cm'>Centímetros (cm)</option>
+				<option value='in'>Pulgadas (in)</option>
+				<option value='mm'>Milímetros (mm)</option>
+				<option value='ex'>Tamaño de la "x" (ex)</option>
+			<select>
+			<label for="color_borde">Color: </label>
+			<input id="color_borde" class="color" value="Sin especificar"><br>
+			<label for="transparencia_borde">Transparente (0)</label>
+			<input id="transparencia_borde" type="range" min="0" max="1" value="1" step="0.01">
+			<label for="transparencia_borde">Opaco (1)</label><br>
+			<button onclick="generarBordes(1)">Generar código</button>		
+		</fieldset>
+		
+
+		<fieldset id="arriba" style="display:none;"><legend>ARRIBA</legend>
+			<label for="tipo_bordeARRIBA">Tipo de borde:</label>
+			<select id="tipo_bordeARRIBA">
+				<option value="nada">No especificar</option>
+				<option value="none">Sin borde</option>
+				<option value="hidden">Oculto</option>
+				<option value="solid">Sólido</option>
+				<option value="dotted">Punteado</option>
+				<option value="dashed">Línea de trazos</option>
+				<option value="double">Doble</option>
+				<option value="groove">Ranura</option>
+				<option value="ridge">Cresta</option>
+				<option value="inset">"Inset"</option>
+				<option value="outset">"Outset"</option>
+			</select><br>
+			<label for="tamanoBordeARRIBA tamanoBorde_unidadesARRIBA">Grosor del borde: </label>
+			<input type="number" id="tamanoBordeARRIBA">
+			<select id="tamanoBorde_unidadesARRIBA">
+				<option value='px'>Píxeles (px)</option>
+				<option value='em'>Tamaño de la "m" (em)</option>
+				<option value='%'>Porcentaje (%)</option>
+				<option value='pt'>Puntos (pt)</option>
+				<option value='cm'>Centímetros (cm)</option>
+				<option value='in'>Pulgadas (in)</option>
+				<option value='mm'>Milímetros (mm)</option>
+				<option value='ex'>Tamaño de la "x" (ex)</option>
+			</select>
+			<label for="color_bordeARRIBA">Color: </label>
+			<input id="color_bordeARRIBA" class="color" value="Sin especificar"><br>
+			<label for="transparencia_bordeARRIBA">Transparente (0)</label>
+			<input id="transparencia_bordeARRIBA" type="range" min="0" max="1" value="1" step="0.01">
+			<label for="transparencia_bordeARRIBA">Opaco (1)</label><br>
+		</fieldset>
+		<fieldset id="derecha" style="display:none;"><legend>DERECHA</legend>
+			<label for="tipo_bordeDERECHA">Tipo de borde:</label>
+			<select id="tipo_bordeDERECHA">
+				<option value="nada">No especificar</option>
+				<option value="none">Sin borde</option>
+				<option value="hidden">Oculto</option>
+				<option value="solid">Sólido</option>
+				<option value="dotted">Punteado</option>
+				<option value="dashed">Línea de trazos</option>
+				<option value="double">Doble</option>
+				<option value="groove">Ranura</option>
+				<option value="ridge">Cresta</option>
+				<option value="inset">"Inset"</option>
+				<option value="outset">"Outset"</option>
+			</select><br>
+			<label for="tamanoBordeDERECHA tamanoBorde_unidadesDERECHA">Grosor del borde: </label>
+			<input type="number" id="tamanoBordeDERECHA">
+			<select id="tamanoBorde_unidadesDERECHA">
+				<option value='px'>Píxeles (px)</option>
+				<option value='em'>Tamaño de la "m" (em)</option>
+				<option value='%'>Porcentaje (%)</option>
+				<option value='pt'>Puntos (pt)</option>
+				<option value='cm'>Centímetros (cm)</option>
+				<option value='in'>Pulgadas (in)</option>
+				<option value='mm'>Milímetros (mm)</option>
+				<option value='ex'>Tamaño de la "x" (ex)</option>
+			</select>
+			<label for="color_bordeDERECHA">Color: </label>
+			<input id="color_bordeDERECHA" class="color" value="Sin especificar"><br>
+			<label for="transparencia_bordeDERECHA">Transparente (0)</label>
+			<input id="transparencia_bordeDERECHA" type="range" min="0" max="1" value="1" step="0.01">
+			<label for="transparencia_bordeDERECHA">Opaco (1)</label><br>
+		</fieldset>
+		<fieldset id="abajo" style="display:none;"><legend>ABAJO</legend>
+			<label for="tipo_bordeABAJO">Tipo de borde:</label>
+			<select id="tipo_bordeABAJO">
+				<option value="nada">No especificar</option>
+				<option value="none">Sin borde</option>
+				<option value="hidden">Oculto</option>
+				<option value="solid">Sólido</option>
+				<option value="dotted">Punteado</option>
+				<option value="dashed">Línea de trazos</option>
+				<option value="double">Doble</option>
+				<option value="groove">Ranura</option>
+				<option value="ridge">Cresta</option>
+				<option value="inset">"Inset"</option>
+				<option value="outset">"Outset"</option>
+			</select><br>
+			<label for="tamanoBordeABAJO tamanoBorde_unidadesABAJO">Grosor del borde: </label>
+			<input type="number" id="tamanoBordeABAJO">
+			<select id="tamanoBorde_unidadesABAJO">
+				<option value='px'>Píxeles (px)</option>
+				<option value='em'>Tamaño de la "m" (em)</option>
+				<option value='%'>Porcentaje (%)</option>
+				<option value='pt'>Puntos (pt)</option>
+				<option value='cm'>Centímetros (cm)</option>
+				<option value='in'>Pulgadas (in)</option>
+				<option value='mm'>Milímetros (mm)</option>
+				<option value='ex'>Tamaño de la "x" (ex)</option>
+			</select>
+			<label for="color_bordeABAJO">Color: </label>
+			<input id="color_bordeABAJO" class="color" value="Sin especificar"><br>
+			<label for="transparencia_bordeABAJO">Transparente (0)</label>
+			<input id="transparencia_bordeABAJO" type="range" min="0" max="1" value="1" step="0.01">
+			<label for="transparencia_bordeABAJO">Opaco (1)</label><br>
+		</fieldset>
+		<fieldset id="izquierda" style="display:none;"><legend>IZQUIERDA</legend>
+			<label for="tipo_bordeIZQUIERDA">Tipo de borde:</label>
+			<select id="tipo_bordeIZQUIERDA">
+				<option value="nada">No especificar</option>
+				<option value="none">Sin borde</option>
+				<option value="hidden">Oculto</option>
+				<option value="solid">Sólido</option>
+				<option value="dotted">Punteado</option>
+				<option value="dashed">Línea de trazos</option>
+				<option value="double">Doble</option>
+				<option value="groove">Ranura</option>
+				<option value="ridge">Cresta</option>
+				<option value="inset">"Inset"</option>
+				<option value="outset">"Outset"</option>
+			</select><br>
+			<label for="tamanoBordeIZQUIERDA tamanoBorde_unidadesIZQUIERDA">Grosor del borde: </label>
+			<input type="number" id="tamanoBordeIZQUIERDA">
+			<select id="tamanoBorde_unidadesIZQUIERDA">
+				<option value='px'>Píxeles (px)</option>
+				<option value='em'>Tamaño de la "m" (em)</option>
+				<option value='%'>Porcentaje (%)</option>
+				<option value='pt'>Puntos (pt)</option>
+				<option value='cm'>Centímetros (cm)</option>
+				<option value='in'>Pulgadas (in)</option>
+				<option value='mm'>Milímetros (mm)</option>
+				<option value='ex'>Tamaño de la "x" (ex)</option>
+			</select>
+			<label for="color_bordeIZQUIERDA">Color: </label>
+			<input id="color_bordeIZQUIERDA" class="color" value="Sin especificar"><br>
+			<label for="transparencia_bordeIZQUIERDA">Transparente (0)</label>
+			<input id="transparencia_bordeIZQUIERDA" type="range" min="0" max="1" value="1" step="0.01">
+			<label for="transparencia_bordeIZQUIERDA">Opaco (1)</label><br>
+		</fieldset>
+		<button onclick="generarBordes(4)" id="botonCuatroBordes" style="display:none;">Generar código</button>
+		
 		<input id="cuatroEsq" type="checkbox" onclick="quitar('border');habilitarEsquinasMultiples(this.checked)" checked>
 		<label for="cuatroEsq">Las 4 esquinas son iguales</label><br>
 		<div id="cantidadDeEsquinas"></div>
-		<script>habilitarEsquinasMultiples(true);</script>
+		<script>habilitarEsquinasMultiples(true);</script>		
 		<div id="muestra_bordes"></div>
     </section>
 </section>
@@ -275,5 +446,6 @@ function habilitarEsquinasMultiples(esUnaSola) {
 </section>
 </article>
 <script src="scripts.js"></script>
+<script src="jscolor/jscolor.js"></script>
 </body>
 </html>

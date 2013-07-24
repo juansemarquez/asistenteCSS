@@ -56,14 +56,14 @@ function agregar(valor) {
 }
 /*Funciones de fondo */
 function habilitar_color_fondo() {
-	if(document.getElementById("color_fondo").value!='Sin especificar') {
+	if(document.getElementById("color_fondo").value!='Sin especificar'&&document.getElementById("color_fondo").value.length!=0) {
 		document.getElementById("transparencia_fondo").disabled=false;
 		document.getElementById("generar_fondo").disabled=false;	
 	}
 	else {
 		document.getElementById("transparencia_fondo").value=1;		
 		document.getElementById("transparencia_fondo").disabled=true;
-		if(document.getElementById("imagen_fondo").value=='Sin especificar' && document.getElementById("imagen_fondo").value.length==0) 
+		if(document.getElementById("imagen_fondo").value=='Sin especificar' || document.getElementById("imagen_fondo").value.length==0) 
 		{ document.getElementById("generar_fondo").disabled=true;	}		
 	}
 }
@@ -88,22 +88,22 @@ function habilitar_imagen_fondo() {
 function fondo() {
 	quitar('background');
 	var cadena= "";
-	var aux = document.getElementById("color_fondo").value;
-	if (aux.length!=0 && aux != 'Sin especificar') {
-		cadena = cadena + "background-color: rgb(" + aux + ");\n";	
+	var aux = document.getElementById("color_fondo");
+	if (aux.value.length!=0 && aux.value != 'Sin especificar') {
+		cadena = cadena + "background-color: #" + aux.value + ";\n";	
 	}
 	else {
 		quitar('background-color:');	
 	}
 	var aux2 = document.getElementById("transparencia_fondo").value;
-	if (aux2!=1 && aux2.length!=0 && aux.length!=0 && aux != 'Sin especificar') {
-		cadena = cadena + "background-color: rgba(" + aux+ "," + aux2 + ");\n"; 	
+	if (aux2!=1 && aux2.length!=0 && aux.value.length!=0 && aux.value != 'Sin especificar') {
+		cadena = cadena + "background-color: rgba(" + document.getElementById("RGBFondo").value+ "," + aux2 + ");\n"; 	
 	}
 	else {
 		quitar('background-color: rgba');
 	}
 	aux = document.getElementById("imagen_fondo").value;
-	if (aux.length != 0) {
+	if (aux.length != 0 && aux!="Sin especificar") {
 		cadena = cadena + "background-image: url('" + aux + "');\n";
 	}
 	else {
@@ -137,8 +137,30 @@ function fondo() {
 	}
 	agregar(cadena);
 }
+function colorFondoRGB(color) {
+	document.getElementById('RGBFondo').value= color.rgb[0]+','+	color.rgb[1]+','+color.rgb[2];
+}
 
 /*Funciones de borde:*/
+function habilitarBordes(esUnoSolo) {
+	if(esUnoSolo) {
+		document.getElementById("bordeUnico").style.display="block";
+		document.getElementById("arriba").style.display="none";
+		document.getElementById("derecha").style.display="none";
+		document.getElementById("abajo").style.display="none";
+		document.getElementById("izquierda").style.display="none";
+		document.getElementById("botonCuatroBordes").style.display="none";
+	}
+	else {
+		document.getElementById("bordeUnico").style.display="none";
+		document.getElementById("arriba").style.display="block";
+		document.getElementById("derecha").style.display="block";
+		document.getElementById("abajo").style.display="block";
+		document.getElementById("izquierda").style.display="block";
+		document.getElementById("botonCuatroBordes").style.display="block";	
+	}
+}
+
 function habilitarEsquinas(tipo, lugar) {
 	var ident= "radio" + lugar; 
 	var ident2= "radio2" + lugar;		
@@ -298,7 +320,41 @@ function quitar(cadena)
 	//"nueva" es el nuevo contenido del textarea.
 	document.getElementById("codigo").value = nueva;
 }
-
+function quitarColor(cadena) {
+	//Quita el/los renglón/es que tenga/n "cadena" en el textarea id="codigo"
+	var regla;	
+	var nueva='';	
+	var anterior = document.getElementById("codigo").value;
+	//Convierto el contenido del textarea en un array, separando por \n	
+	var vector = anterior.split("\n");
+	//Recorro el array		
+	for (var i=0; i<vector.length; i++)
+	{
+		//Asigno el elemento en la variable regla
+		regla = vector[i];
+		//Si "cadena" no está en "regla", agrego la regla a la nueva cadena. 
+		if(regla.indexOf(cadena)!=0) {
+			nueva = nueva + regla;
+		}		
+	}
+	//Agrego saltos de línea:
+		//Primero reemplazo ; por zxc
+	var aux=nueva.replace(';','zxc');	
+	while (nueva!=aux) {		
+		nueva=aux;		
+		aux=nueva.replace(';','zxc');	
+		//alert('aux: '+aux+'\nnueva: '+nueva);
+	}
+		//Luego reemplazo zxc por ;\n
+	aux=nueva.replace('zxc',';\n');	
+	while (nueva!=aux) {		
+		nueva=aux;		
+		aux=nueva.replace('zxc',';\n');	
+		//alert('aux: '+aux+'\nnueva: '+nueva);
+	}
+	//"nueva" es el nuevo contenido del textarea.
+	document.getElementById("codigo").value = nueva;
+}
 function colorPicker(elemento) {
 	//TODO:	
 	//Buscar alguno hecho
