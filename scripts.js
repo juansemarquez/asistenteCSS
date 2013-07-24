@@ -42,9 +42,15 @@ function opcionCheckbox(cb) {
 	else {
 		quitar(cb.value);	
 	}
-
-	
 }
+function colorTexto(color) {
+    quitarColor('color:');
+    if(color.value!='Sin especificar' && color.value.length!=0) {
+        agregar('color: #'+color.value+';\n')    
+    }
+}
+	
+
 function agregar(valor) {
 	if(valor.indexOf("nada;\n")==-1) {
 	  	document.getElementById("codigo").value=document.getElementById("codigo").value+valor;
@@ -54,7 +60,9 @@ function agregar(valor) {
 		quitar(principio);	
 	}
 }
-/*Funciones de fondo */
+/* #########################
+Funciones de fondo 
+############################*/
 function habilitar_color_fondo() {
 	if(document.getElementById("color_fondo").value!='Sin especificar'&&document.getElementById("color_fondo").value.length!=0) {
 		document.getElementById("transparencia_fondo").disabled=false;
@@ -67,7 +75,6 @@ function habilitar_color_fondo() {
 		{ document.getElementById("generar_fondo").disabled=true;	}		
 	}
 }
-
 function habilitar_imagen_fondo() {
 	if(document.getElementById("imagen_fondo").value!='Sin especificar' && document.getElementById("imagen_fondo").value.length!=0) {
 		document.getElementById("repetir").disabled=false;
@@ -138,11 +145,16 @@ function fondo() {
 	agregar(cadena);
 }
 function colorFondoRGB(color) {
-	document.getElementById('RGBFondo').value= color.rgb[0]+','+	color.rgb[1]+','+color.rgb[2];
+	document.getElementById('RGBFondo').value= Math.round(color.rgb[0]*10000)/100+'%,'+Math.round(color.rgb[1]*10000)/100+'%,'+Math.round(color.rgb[2]*10000)/100+'%';
 }
 
-/*Funciones de borde:*/
+/* #########################
+Funciones de borde:
+#########################*/
 function habilitarBordes(esUnoSolo) {
+    var radius=salvarRadius();    
+    quitar('border');
+    agregar(radius);    
 	if(esUnoSolo) {
 		document.getElementById("bordeUnico").style.display="block";
 		document.getElementById("arriba").style.display="none";
@@ -162,6 +174,7 @@ function habilitarBordes(esUnoSolo) {
 }
 
 function habilitarEsquinas(tipo, lugar) {
+    quitar('radius');
 	var ident= "radio" + lugar; 
 	var ident2= "radio2" + lugar;		
 	if (tipo.value=="nada") {			
@@ -196,7 +209,7 @@ function generarBordes(cant) {
 		}
 		else if(i==2) {
 			pref= 'border-right-';
-			pos='DERECHO';		
+			pos='DERECHA';		
 		}
 		else if(i==3) {
 			pref= 'border-bottom-';
@@ -207,6 +220,12 @@ function generarBordes(cant) {
 			pos='IZQUIERDA';		
 		}
 		else { return; }
+		quitar(pref+'style:');
+		quitar(pref + 'width:');
+		quitar(pref + 'color:');
+		/*alert(pos);
+		alert('tipo_borde' + pos);
+		alert(document.getElementById('tipo_borde' + pos).value);*/
 		if(document.getElementById('tipo_borde' + pos).value=="nada") {
 			quitar(pref + 'style:');				
 		}
@@ -219,32 +238,24 @@ function generarBordes(cant) {
 		else {
 			cadena = cadena + pref + 'width: ' + document.getElementById('tamanoBorde' + pos).value + document.getElementById('tamanoBorde_unidades' + pos).value + ';\n';				
 		}
-		if(document.getElementById('color_borde' + pos).value == 'Sin especificar') {
+		if(document.getElementById('color_borde' + pos).value == 'Sin especificar'||document.getElementById('color_borde' + pos).value.length == 0) {
 			quitar(pref + 'color:');			
 		}
 		else {
-			cadena = cadena + pref + 'color: ' + document.getElementById('color_borde' + pos).value + ';\n';				
-		}
-		if(document.getElementById('transparencia_borde' + pos).value == 1 || document.getElementById('transparencia_borde' + pos).value.length == 0) {
+			cadena = cadena + pref + 'color: #' + document.getElementById('color_borde' + pos).value + ';\n';				
+		    if(document.getElementById('transparencia_borde' + pos).value == 1 || document.getElementById('transparencia_borde' + pos).value.length == 0) {
 			quitar(pref + 'color: rgba(');			
-		}
-		else {
-			//TODO : Corregir.			
-			cadena = cadena + pref + 'color: rgba(' + document.getElementById('transparencia_borde' + pos).value + ');\n';				
-		}
-
-		if(document.getElementById('radio' + pos).disabled ||document.getElementById('radio2' + pos).disabled||document.getElementById('radio'+pos).value.length == 0) {
-			quitar(pref + '-radius:');			
-		}
-		/* TODO
-		else {
-			cadena = cadena + pref + 'color: ' + document.getElementById('color' + pos).value + pos).value + ';\n';				
-		}
-		*/
-				
+		    }
+		    else {
+                cadena = cadena + pref + 'color: rgba('+document.getElementById('bordeRGB'+pos).value+','+ document.getElementById('transparencia_borde' + pos).value + ');\n';				
+            }		
+		}					
 	}	
-		agregar(cadena);
-		document.getElementById("muestra_bordes").style = cadena;
+	agregar(cadena);
+	document.getElementById("muestra_bordes").style = cadena;
+}
+function colorBordeRGB(color) {
+    document.getElementById('bordeRGB').value = Math.round(color.rgb[0]*10000)/100+'%,'+Math.round(color.rgb[1]*10000)/100+'%,'+Math.round(color.rgb[2]*10000)/100+'%';
 }
 function generarEsquinas(cant) {
 	 quitar('radius');	 
@@ -283,7 +294,34 @@ function generarEsquinas(cant) {
     agregar(cadena);
     document.getElementById("muestra_bordes").style = cadena;
 }
-
+function salvarRadius() {
+    var codigo=document.getElementById("codigo").value.split("\n");
+    var radius='';
+    var regla;
+    for (var i=0; i<codigo.length; i++) {
+        regla=codigo[i];
+        if(regla.indexOf('radius')==-1) {
+			radius = radius + regla;
+		}
+    }
+    //Agrego saltos de línea:
+		//Primero reemplazo ; por zxc
+	var aux=radius.replace(';','zxc');	
+	while (radius!=aux) {		
+		radius=aux;		
+		aux=radius.replace(';','zxc');	
+	}
+		//Luego reemplazo zxc por ;\n
+	aux=radius.replace('zxc',';\n');	
+	while (radius!=aux) {		
+		radius=aux;		
+		aux=radius.replace('zxc',';\n');	
+	}
+	return radius;       
+}
+/*###########################
+     Funciones generales
+############################*/
 function quitar(cadena)
 {	
 	//Quita el/los renglón/es que tenga/n "cadena" en el textarea id="codigo"
@@ -321,7 +359,7 @@ function quitar(cadena)
 	document.getElementById("codigo").value = nueva;
 }
 function quitarColor(cadena) {
-	//Quita el/los renglón/es que tenga/n "cadena" en el textarea id="codigo"
+	//Quita el/los renglón/es que EMPIECE/N con "cadena" en el textarea id="codigo"
 	var regla;	
 	var nueva='';	
 	var anterior = document.getElementById("codigo").value;
@@ -354,14 +392,4 @@ function quitarColor(cadena) {
 	}
 	//"nueva" es el nuevo contenido del textarea.
 	document.getElementById("codigo").value = nueva;
-}
-function colorPicker(elemento) {
-	//TODO:	
-	//Buscar alguno hecho
-
-	//Para probar:	
-	var colorDevuelto= 'rgb(150,150,150)';
-	elemento.value=colorDevuelto;	
-	document.getElementById("muestra_color_texto").style.backgroundColor=colorDevuelto;
-	//agregar("color: "+ colorDevuelto + ";\n");
 }
