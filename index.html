@@ -15,7 +15,22 @@ function unidades(nombreSelect) {
 	document.write("<option value='in'>Pulgadas (in)</option>");
 	document.write("<option value='mm'>Milímetros (mm)</option>");	
    document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
-   document.write("<select>");
+   document.write("</select>");
+}
+function numero_y_unidad(etiqueta, ident) {
+    var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
+    cadena += "<input type='number' id='"+ident+"'>\n";
+    cadena += "<select id='" + ident + "_unidades'>\n";
+	cadena += "<option value='px'>Píxeles (px)</option>\n";
+	cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
+	cadena += "<option value='%'>Porcentaje (%)</option>\n";
+	cadena += "<option value='pt'>Puntos (pt)</option>\n";
+	cadena += "<option value='cm'>Centímetros (cm)</option>\n";
+	cadena += "<option value='in'>Pulgadas (in)</option>\n";
+	cadena += "<option value='mm'>Milímetros (mm)</option>\n";	
+   cadena += "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
+   cadena += "</select>";
+   return cadena;
 }
 function habilitarEsquinasMultiples(esUnaSola) {
 	var cadena="";
@@ -357,6 +372,84 @@ function habilitarEsquinasMultiples(esUnaSola) {
 		<script>habilitarEsquinasMultiples(true);</script>		
 		<div id="muestra_bordes"></div>
     </section>
+    <section id="caja" class="tab">
+        <label for="display">Mostrar como:</label>
+        <select id="display">
+            <option value="nada">Sin especificar</option>
+            <option value="none">No mostrar</option>
+            <option value="inline">En línea</option>
+            <option value="block">Bloque</option>                    
+        </select><br>
+        <label for="visibility">Visibilidad</label>
+        <select id="visibility">
+            <option value="nada">Sin especificar</option>
+            <option value="hidden">Oculto</option>
+            <option value="visible">Visible</option>
+            <option value="collapse">Colapsar (para tablas)</option>
+        </select><br>
+        <label for="float">Flotar:</label>
+        <select id="float">
+            <option value="nada">Sin especificar</option>
+            <option value="none">No flotar</option>
+            <option value="right">A la derecha</option>
+            <option value="left">A la izquierda</option>
+        </select><br>
+        <label for="clear">Despejar (ignorar flotar)</label>
+        <select id="clear">
+            <option value="nada">Sin especificar</option>
+            <option value="none">No despejar</option>
+            <option value="right">A la derecha</option>
+            <option value="left">A la izquierda</option>
+            <option value="both">A ambos lados</option>
+        </select><br>
+        <label for="overflow">Desbordamiento (Overflow)</label>
+        <select id="overflow">
+            <option value="nada">Sin especificar</option>
+            <option value="visible">Visible</option>
+            <option value="oculto">Oculto</option>
+            <option value="scroll">Barras de desplazamiento</option>
+            <option value="auto">Automático</option>        
+        </select><br>
+        <label for="z-index">Valor eje Z</label>
+        <input type="number" id="z-index"><br>
+        <script>
+            //TODO: Hardcodear esto en la versión final.             
+            document.write(numero_y_unidad('Ancho','width')+'<br>');
+            document.write(numero_y_unidad('Altura','height')+'<br>');
+            document.write(numero_y_unidad('Ancho mínimo','min-width')+'<br>');
+            document.write(numero_y_unidad('Altura mínima','min-height')+'<br>');
+            document.write(numero_y_unidad('Ancho máximo','max-width')+'<br>');
+            document.write(numero_y_unidad('Altura máxima','max-height')+'<br>');
+            document.write('<fieldset><legend>Márgenes:</legend>\n');
+            document.write(numero_y_unidad('Superior: ','margin-top')+'<br>');
+            document.write(numero_y_unidad('Derecho: ','margin-right')+'<br>');
+            document.write(numero_y_unidad('Inferior: ','margin-bottom')+'<br>');
+            document.write(numero_y_unidad('Izquierdo: ','margin-left')+'</fieldset>');
+            document.write('<fieldset><legend>Márgenes internos (padding):</legend>\n');
+            document.write(numero_y_unidad('Superior: ','padding-top')+'<br>');
+            document.write(numero_y_unidad('Derecho: ','padding-right')+'<br>');
+            document.write(numero_y_unidad('Inferior: ','padding-bottom')+'<br>');
+            document.write(numero_y_unidad('Izquierdo: ','padding-left')+'</fieldset>');                  
+</script>
+        <fieldset><legend>Posicionamiento:</legend>
+            <label for="position">Posicionamiento</label>
+            <select id="position">
+                <option value="nada">Sin especificar</option>
+                <option value="static">Estático</option>
+                <option value="fixed">Fijo</option>
+                <option value="absolute">Absoluto</option>
+                <option value="relative">Relativo</option>       
+            </select><br>
+            <script>
+                //TODO: Hardcodear
+                document.write(numero_y_unidad('Desplazamiento superior: ','top')+'<br>');
+                document.write(numero_y_unidad('Desplazamiento derecho: ','right')+'<br>');
+                document.write(numero_y_unidad('Desplazamiento inferior: ','bottom')+'<br>');
+                document.write(numero_y_unidad('Desplazamiento izquierdo: ','left'));            
+            </script>
+        </fieldset>
+    </section>
+    
 </section>
 <section id="salida">
     <h2>Código generado:</h2>
