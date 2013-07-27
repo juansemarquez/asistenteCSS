@@ -320,6 +320,84 @@ function salvarRadius() {
 	return radius;       
 }
 /*###########################
+     Funciones de caja
+############################*/
+function agregarSelect(elemento) {
+    quitar(elemento.id);    
+    var cadena = elemento.id + ': ' + elemento.value + ';\n';
+    agregar(cadena);
+}
+function inputText(elemento, tieneUnidad) {    
+    if(elemento.id.indexOf("_unidades")==-1) {
+        //Fue invocada porque se escribió un número
+        quitarColor(elemento.id);    
+        if(elemento.value.length!=0 && elemento.value != '' && elemento.value != ' '&& elemento.value != '  ') {    
+            var cadena = elemento.id + ': ' + elemento.value;
+            if(tieneUnidad) {
+                var ident = elemento.id+"_unidades";
+                cadena += document.getElementById(ident).value + ';\n';            
+            }
+            else {
+                cadena += ';\n';
+            }
+            agregar(cadena);
+        }
+    }
+    else {
+        //Fue invocada porque se cambió la opción del select de la unidad
+        var lugar = elemento.id.indexOf("_unidades");
+        var n = elemento.id.substr(0,lugar);
+        var ele = document.getElementById(n);
+        quitarColor(ele.id);    
+        if(ele.value.length!=0 && ele.value != '' && ele.value != ' '&& ele.value != '  ') {    
+            var cadena = ele.id + ': ' + ele.value;
+            if(tieneUnidad) {
+                cadena += elemento.value + ';\n';            
+            }
+            else {
+                cadena += ';\n';
+            }
+            agregar(cadena);
+        }
+    }
+}
+
+function habilitarPosicionamiento(elemento) {
+    if(elemento.value=='nada' || elemento.value=='static') {
+        document.getElementById("top").value='';
+        document.getElementById("bottom").value='';
+        document.getElementById("right").value='';
+        document.getElementById("left").value='';        
+        quitarColor('top:');
+        quitarColor('bottom:');
+        quitarColor('right:');
+        quitarColor('left:');        
+        document.getElementById("top").disabled=true;
+        document.getElementById("bottom").disabled=true;
+        document.getElementById("right").disabled=true;
+        document.getElementById("left").disabled=true;        
+        document.getElementById("top_unidades").disabled=true;
+        document.getElementById("bottom_unidades").disabled=true;
+        document.getElementById("right_unidades").disabled=true;
+        document.getElementById("left_unidades").disabled=true;
+    }
+    else {
+        document.getElementById("top").disabled=false;
+        document.getElementById("bottom").disabled=false;
+        document.getElementById("right").disabled=false;
+        document.getElementById("left").disabled=false;
+        document.getElementById("top_unidades").disabled=false;
+        document.getElementById("bottom_unidades").disabled=false;
+        document.getElementById("right_unidades").disabled=false;
+        document.getElementById("left_unidades").disabled=false;
+    }
+}
+
+        
+
+
+
+/*###########################
      Funciones generales
 ############################*/
 function quitar(cadena)

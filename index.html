@@ -14,22 +14,38 @@ function unidades(nombreSelect) {
 	document.write("<option value='cm'>Centímetros (cm)</option>");
 	document.write("<option value='in'>Pulgadas (in)</option>");
 	document.write("<option value='mm'>Milímetros (mm)</option>");	
-   document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
-   document.write("</select>");
+    document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
+    document.write("</select>");
 }
-function numero_y_unidad(etiqueta, ident) {
-    var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
-    cadena += "<input type='number' id='"+ident+"'>\n";
-    cadena += "<select id='" + ident + "_unidades'>\n";
-	cadena += "<option value='px'>Píxeles (px)</option>\n";
-	cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
-	cadena += "<option value='%'>Porcentaje (%)</option>\n";
-	cadena += "<option value='pt'>Puntos (pt)</option>\n";
-	cadena += "<option value='cm'>Centímetros (cm)</option>\n";
-	cadena += "<option value='in'>Pulgadas (in)</option>\n";
-	cadena += "<option value='mm'>Milímetros (mm)</option>\n";	
-   cadena += "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
-   cadena += "</select>";
+function numero_y_unidad(etiqueta, ident, habilitado=true) {
+    if(habilitado) {    
+        var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
+        cadena += "<input type='number' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)'>\n";
+        cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)'>\n";
+	   cadena += "<option value='px'>Píxeles (px)</option>\n";
+	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
+	   cadena += "<option value='%'>Porcentaje (%)</option>\n";
+	   cadena += "<option value='pt'>Puntos (pt)</option>\n";
+	   cadena += "<option value='cm'>Centímetros (cm)</option>\n";
+	   cadena += "<option value='in'>Pulgadas (in)</option>\n";
+	   cadena += "<option value='mm'>Milímetros (mm)</option>\n";	
+       cadena += "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
+       cadena += "</select>";       
+   }
+   else {
+       var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
+        cadena += "<input type='number' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)' disabled>\n";
+        cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)' disabled>\n";
+	   cadena += "<option value='px'>Píxeles (px)</option>\n";
+	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
+	   cadena += "<option value='%'>Porcentaje (%)</option>\n";
+	   cadena += "<option value='pt'>Puntos (pt)</option>\n";
+	   cadena += "<option value='cm'>Centímetros (cm)</option>\n";
+	   cadena += "<option value='in'>Pulgadas (in)</option>\n";
+	   cadena += "<option value='mm'>Milímetros (mm)</option>\n";	
+       cadena += "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
+       cadena += "</select>";          
+   }
    return cadena;
 }
 function habilitarEsquinasMultiples(esUnaSola) {
@@ -374,28 +390,28 @@ function habilitarEsquinasMultiples(esUnaSola) {
     </section>
     <section id="caja" class="tab">
         <label for="display">Mostrar como:</label>
-        <select id="display">
+        <select id="display" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
             <option value="none">No mostrar</option>
             <option value="inline">En línea</option>
             <option value="block">Bloque</option>                    
         </select><br>
         <label for="visibility">Visibilidad</label>
-        <select id="visibility">
+        <select id="visibility" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
             <option value="hidden">Oculto</option>
             <option value="visible">Visible</option>
             <option value="collapse">Colapsar (para tablas)</option>
         </select><br>
         <label for="float">Flotar:</label>
-        <select id="float">
+        <select id="float" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
             <option value="none">No flotar</option>
             <option value="right">A la derecha</option>
             <option value="left">A la izquierda</option>
         </select><br>
         <label for="clear">Despejar (ignorar flotar)</label>
-        <select id="clear">
+        <select id="clear" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
             <option value="none">No despejar</option>
             <option value="right">A la derecha</option>
@@ -403,7 +419,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
             <option value="both">A ambos lados</option>
         </select><br>
         <label for="overflow">Desbordamiento (Overflow)</label>
-        <select id="overflow">
+        <select id="overflow" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
             <option value="visible">Visible</option>
             <option value="oculto">Oculto</option>
@@ -411,7 +427,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
             <option value="auto">Automático</option>        
         </select><br>
         <label for="z-index">Valor eje Z</label>
-        <input type="number" id="z-index"><br>
+        <input type="number" id="z-index" onkeyup="inputText(this,false)" onblur="inputText(this,false)"><br>
         <script>
             //TODO: Hardcodear esto en la versión final.             
             document.write(numero_y_unidad('Ancho','width')+'<br>');
@@ -433,7 +449,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 </script>
         <fieldset><legend>Posicionamiento:</legend>
             <label for="position">Posicionamiento</label>
-            <select id="position">
+            <select id="position" onchange="agregarSelect(this); habilitarPosicionamiento(this);">
                 <option value="nada">Sin especificar</option>
                 <option value="static">Estático</option>
                 <option value="fixed">Fijo</option>
@@ -442,10 +458,10 @@ function habilitarEsquinasMultiples(esUnaSola) {
             </select><br>
             <script>
                 //TODO: Hardcodear
-                document.write(numero_y_unidad('Desplazamiento superior: ','top')+'<br>');
-                document.write(numero_y_unidad('Desplazamiento derecho: ','right')+'<br>');
-                document.write(numero_y_unidad('Desplazamiento inferior: ','bottom')+'<br>');
-                document.write(numero_y_unidad('Desplazamiento izquierdo: ','left'));            
+                document.write(numero_y_unidad('Desplazamiento superior: ','top',false)+'<br>');
+                document.write(numero_y_unidad('Desplazamiento izquierdo: ','left',false)+'<br>');       
+                document.write(numero_y_unidad('Desplazamiento inferior: ','bottom',false)+'<br>');
+                document.write(numero_y_unidad('Desplazamiento derecho: ','right',false)+'<br>');
             </script>
         </fieldset>
     </section>
