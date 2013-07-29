@@ -389,6 +389,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 		<div id="muestra_bordes"></div>
     </section>
     <section id="caja" class="tab">
+        <h3>Modelo de caja</h3>
         <label for="display">Mostrar como:</label>
         <select id="display" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
@@ -465,14 +466,40 @@ function habilitarEsquinasMultiples(esUnaSola) {
             </script>
         </fieldset>
     </section>
-    
+    <section id="lista" class="tab">
+        <h3>Listas</h3>
+            <label for="list-style-type">Tipo de item de lista</label>
+            <select id="list-style-type" onchange="agregarSelect(this)">
+                <option value="nada">Sin especificar</option>
+                <option value="none">No mostrar item de lista</option>
+                <option value="disc">Círculo lleno</option>
+                <option value="circle">Círculo vacío</option>
+                <option value="square">Cuadrado</option>  
+                <option value="decimal">Números (1 2 3...)</option>
+                <option value="decimal-leading-zero">Números con cero: (01 02 03...)</option>
+                <option value="lower-roman">Romanos en minúscula (i ii iii iv...)</option>
+                <option value="upper-roman">Romanos en mayúscula (I II III IV...)</option>
+                <option value="lower-alpha">Letras minúsculas (a b c d...)</option>
+                <option value="upper-alpha">Letras mayúsculas (A B C D...)</option>
+                <option value="lower-greek">Letras griegas (alfa, beta, gamma...)</option>
+            </select><br>
+            <label for="imagen_lista">Imagen para el item</label>		
+		    <input id="imagen_lista" value="Sin especificar" onkeyup="agregarImagenLista(this);" onblur="agregarImagenLista(this);"><br>
+		    <label for="list-style-position">Posición del item</label>
+		    <select id="list-style-position" onchange="agregarSelect(this)">
+                <option value="nada">Sin especificar</option>
+                <option value="inside">Interno</option>
+                <option value="outside">Externo</option>	    
+		    </select>
+    </section>
 </section>
 <section id="salida">
     <h2>Código generado:</h2>
-    <textarea id="codigo" cols="80" rows="10"></textarea>
+    <textarea id="codigo" cols="80" rows="10" readonly></textarea>
 </section>
 </article>
 <script>
+    //Esto es porque no puedo hacer que el jscolor me deje los inputs vacíos:
     document.getElementById("color_fondo").value='';
     document.getElementById("color_borde").value='';
     document.getElementById("color_bordeARRIBA").value='';

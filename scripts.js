@@ -393,9 +393,16 @@ function habilitarPosicionamiento(elemento) {
     }
 }
 
-        
+/*###########################
+     Funciones de lista
+############################*/    
 
-
+function agregarImagenLista(elemento) {
+    quitar('list-style-image:');
+    if(elemento.value!="Sin especificar" && elemento.value.length!=0 && elemento.value!='') {
+            agregar('list-style-image: ' + elemento.value + ';\n');
+    }
+}
 
 /*###########################
      Funciones generales
