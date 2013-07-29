@@ -1,5 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;    
+}
+body {
+    background-color: #A0A19C;
+
+}
+body > .header > h1 {
+    text-align: center;
+    font-family: 'Lobster', cursive, sans-serif;
+    
+}
+.article {
+    width:90%;
+    max-width: 900px;
+    min-width: 633px;
+    margin: 5px auto 40px auto;
+    background-color: #F0F0F0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    box-shadow: 30px 30px 30px 5px #444444;
+    
+}
+#pest {
+    width: 857px;
+    margin-left: 68px;
+    margin-right: 53px;    
+}
+.pest {
+    float: left;    
+    width: 100px;
+    text-align: center;
+    background-color: #444444;
+    color: white;
+    margin: 0 2px;    
+}
+.pest:hover {
+    color: yellow;
+    background-color: #AAAAAA;        
+}
+.tab {
+    display: none;
+    margin-left: 15px;
+    background-color: white;
+    width: 842px;
+    box-shadow: 10px 10px 10px 5px #777777;
+    margin-bottom: 15px;
+    clear:  both; 
+}
+#texto {    
+    display: block;       
+}
 #muestra_bordes {
 	width:50px;
 	height:50px;
 	background-color:red;	
 }
+
+

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <title>Asistente CSS</title>
 <link href="estilo.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 <script>
 function unidades(nombreSelect) {
 	document.write("<select id='" + nombreSelect + "_unidades'>");
@@ -20,7 +21,7 @@ function unidades(nombreSelect) {
 function numero_y_unidad(etiqueta, ident, habilitado=true) {
     if(habilitado) {    
         var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
-        cadena += "<input type='number' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)'>\n";
+        cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)'>\n";
         cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)'>\n";
 	   cadena += "<option value='px'>Píxeles (px)</option>\n";
 	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
@@ -34,7 +35,7 @@ function numero_y_unidad(etiqueta, ident, habilitado=true) {
    }
    else {
        var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
-        cadena += "<input type='number' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)' disabled>\n";
+        cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)' disabled>\n";
         cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)' disabled>\n";
 	   cadena += "<option value='px'>Píxeles (px)</option>\n";
 	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
@@ -60,7 +61,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 		cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
 		cadena = cadena + "</select>\n";
 		cadena = cadena + "<label for=\"radio radio2\">Radios: </label>\n";
-		cadena = cadena + "<input type=\"number\" id=\"radio\" disabled><input type=\"number\" id=\"radio2\" disabled>\n";
+		cadena = cadena + "<input type=\"number\" size=\"4\" id=\"radio\" disabled><input type=\"number\" size=\"4\" id=\"radio2\" disabled>\n";
       cadena=cadena+"<button onclick=\"generarEsquinas(1)\">Generar esquinas</button>\n";
 	}
 	else {
@@ -77,8 +78,8 @@ function habilitarEsquinasMultiples(esUnaSola) {
 			cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
 			cadena = cadena + "</select>\n";
 			cadena = cadena + "<label for=\"radio" + i + " radio2" + i + "\">Radios: </label>\n";
-			cadena = cadena + "<input type=\"number\" id=\"radio" + i + "\" disabled>";
-			cadena = cadena + "<input type=\"number\" id=\"radio2" + i + "\" disabled><br>\n</fieldset>\n";
+			cadena = cadena + "<input type=\"number\" id=\"radio" + i + "\" size=\"4\" disabled>";
+			cadena = cadena + "<input type=\"number\" id=\"radio2" + i + "\" size=\"4\" disabled><br>\n</fieldset>\n";
 		}
 		cadena=cadena+"<button onclick=\"generarEsquinas(4)\">Generar esquinas</button>\n";	
 	}	
@@ -87,12 +88,19 @@ function habilitarEsquinasMultiples(esUnaSola) {
 </script>
 </head>
 <body>
-<header>
+<header class="header">
     <h1>Asistente CSS</h1>
 </header>
-<article>
+<article class="article">
 <section id="seleccionar">
     <h2>Seleccionar las propiedades</h2>
+    <section id="pest">
+        <div id="texto_pest" class="pest" onclick="mostrarPestania(this.id);">Texto</div>
+        <div id="fondo_pest" class="pest" onclick="mostrarPestania(this.id);">Fondo</div>
+        <div id="borde_pest" class="pest" onclick="mostrarPestania(this.id);">Borde</div>
+        <div id="caja_pest" class="pest" onclick="mostrarPestania(this.id);">Caja</div>
+        <div id="lista_pest" class="pest" onclick="mostrarPestania(this.id);">Lista</div>
+    </section>
     <section id="texto" class="tab">
     	  <h3>Texto</h3>
         <label for="tipografia tipog_pers">Tipografía: </label>
@@ -107,12 +115,12 @@ function habilitarEsquinasMultiples(esUnaSola) {
         <button onclick='quitar("font-family:");agregar("font-family: " + document.getElementById("tipog_pers").value + ";\n")' disabled id="boton_tipog">Generar código</button><br>
 		  
 		  <label for="tamanoTexto tamanoTexto_unidades">Tamaño de texto: </label>
-		  <input type="number" id="tamanoTexto" onkeyup="habilitarBoton(this, document.getElementById('boton_tamano'))">
+		  <input type="number" size="4" id="tamanoTexto" onkeyup="habilitarBoton(this, document.getElementById('boton_tamano'))">
 		  <script>unidades("tamanoTexto")</script>
 		  <button onclick="quitar('font-size')agregar('font-size: ' + tamanoTexto.value + tamanoTexto_unidades.value + ';\n')" disabled id="boton_tamano">Generar código</button><br>
 		  
 		  <label for="altLinea altLinea_unidades">Altura de línea: </label>
-		  <input type="number" id="altLinea" onkeyup="habilitarBoton(this, document.getElementById('boton_altLinea'))">
+		  <input type="number" size="4" id="altLinea" onkeyup="habilitarBoton(this, document.getElementById('boton_altLinea'))">
 		  <script>unidades("altLinea")</script>
 		  <button onclick="quitar('line-height');agregar('line-height: ' + altLinea.value + altLinea_unidades.value + ';\n')" disabled id="boton_altLinea">Generar código</button><br>
 		  
@@ -223,7 +231,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBorde tamanoBorde_unidades">Grosor del borde: </label>
-			<input type="number" id="tamanoBorde">
+			<input type="number" size="4" id="tamanoBorde">
 			<select id="tamanoBorde_unidades">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -233,7 +241,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value='in'>Pulgadas (in)</option>
 				<option value='mm'>Milímetros (mm)</option>
 				<option value='ex'>Tamaño de la "x" (ex)</option>
-			<select>
+			</select><br>
 			<label for="color_borde">Color: </label>
 			<input id="color_borde" class="color {onImmediateChange:'colorBordeRGB(this);',required:false}" value="Sin especificar"><br>
 			<input id="bordeRGB" type="hidden">
@@ -260,7 +268,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeARRIBA tamanoBorde_unidadesARRIBA">Grosor del borde: </label>
-			<input type="number" id="tamanoBordeARRIBA">
+			<input type="number" size="4" id="tamanoBordeARRIBA">
 			<select id="tamanoBorde_unidadesARRIBA">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -270,7 +278,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value='in'>Pulgadas (in)</option>
 				<option value='mm'>Milímetros (mm)</option>
 				<option value='ex'>Tamaño de la "x" (ex)</option>
-			</select>
+			</select><br>
 			<label for="color_bordeARRIBA">Color: </label>
 			<input id="color_bordeARRIBA" class="color {onImmediateChange:'colorBordeRGB(this);',required:false}" value="Sin especificar"><br>
 			<input id="bordeRGBARRIBA" type="hidden">
@@ -294,7 +302,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeDERECHA tamanoBorde_unidadesDERECHA">Grosor del borde: </label>
-			<input type="number" id="tamanoBordeDERECHA">
+			<input type="number" size="4" id="tamanoBordeDERECHA">
 			<select id="tamanoBorde_unidadesDERECHA">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -304,7 +312,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value='in'>Pulgadas (in)</option>
 				<option value='mm'>Milímetros (mm)</option>
 				<option value='ex'>Tamaño de la "x" (ex)</option>
-			</select>
+			</select><br>
 			<label for="color_bordeDERECHA">Color: </label>
 			<input id="color_bordeDERECHA" class="color {onImmediateChange:'colorBordeRGB(this);',required:false}" value="Sin especificar"><br>
 			<input id="bordeRGBDERECHA" type="hidden">
@@ -328,7 +336,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeABAJO tamanoBorde_unidadesABAJO">Grosor del borde: </label>
-			<input type="number" id="tamanoBordeABAJO">
+			<input type="number" size="4" id="tamanoBordeABAJO">
 			<select id="tamanoBorde_unidadesABAJO">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -338,7 +346,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value='in'>Pulgadas (in)</option>
 				<option value='mm'>Milímetros (mm)</option>
 				<option value='ex'>Tamaño de la "x" (ex)</option>
-			</select>
+			</select><br>
 			<label for="color_bordeABAJO">Color: </label>
 			<input id="color_bordeABAJO" class="color {onImmediateChange:'colorBordeRGB(this);',required:false}" value="Sin especificar"><br>
 			<input id="bordeRGBABAJO" type="hidden">
@@ -362,7 +370,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeIZQUIERDA tamanoBorde_unidadesIZQUIERDA">Grosor del borde: </label>
-			<input type="number" id="tamanoBordeIZQUIERDA">
+			<input type="number" size="4" id="tamanoBordeIZQUIERDA">
 			<select id="tamanoBorde_unidadesIZQUIERDA">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -372,7 +380,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value='in'>Pulgadas (in)</option>
 				<option value='mm'>Milímetros (mm)</option>
 				<option value='ex'>Tamaño de la "x" (ex)</option>
-			</select>
+			</select><br>
 			<label for="color_bordeIZQUIERDA">Color: </label>
 			<input id="color_bordeIZQUIERDA" class="color {onImmediateChange:'colorBordeRGB(this);',required:false}" value="Sin especificar"><br>
 			<input id="bordeRGBIZQUIERDA" type="hidden">
@@ -396,7 +404,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
             <option value="none">No mostrar</option>
             <option value="inline">En línea</option>
             <option value="block">Bloque</option>                    
-        </select><br>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;
         <label for="visibility">Visibilidad</label>
         <select id="visibility" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
@@ -410,7 +418,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
             <option value="none">No flotar</option>
             <option value="right">A la derecha</option>
             <option value="left">A la izquierda</option>
-        </select><br>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;
         <label for="clear">Despejar (ignorar flotar)</label>
         <select id="clear" onchange="agregarSelect(this)">
             <option value="nada">Sin especificar</option>
@@ -426,17 +434,17 @@ function habilitarEsquinasMultiples(esUnaSola) {
             <option value="oculto">Oculto</option>
             <option value="scroll">Barras de desplazamiento</option>
             <option value="auto">Automático</option>        
-        </select><br>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;
         <label for="z-index">Valor eje Z</label>
-        <input type="number" id="z-index" onkeyup="inputText(this,false)" onblur="inputText(this,false)"><br>
+        <input type="number" size="4" id="z-index" onkeyup="inputText(this,false)" onblur="inputText(this,false)"><br>
         <script>
             //TODO: Hardcodear esto en la versión final.             
-            document.write(numero_y_unidad('Ancho','width')+'<br>');
-            document.write(numero_y_unidad('Altura','height')+'<br>');
-            document.write(numero_y_unidad('Ancho mínimo','min-width')+'<br>');
-            document.write(numero_y_unidad('Altura mínima','min-height')+'<br>');
-            document.write(numero_y_unidad('Ancho máximo','max-width')+'<br>');
-            document.write(numero_y_unidad('Altura máxima','max-height')+'<br>');
+            document.write(numero_y_unidad('Ancho','width'));
+            document.write(numero_y_unidad(' - Mínimo','min-width'));
+            document.write(numero_y_unidad(' - Máximo','max-width')+'<br>');
+            document.write(numero_y_unidad('Altura','height'));
+            document.write(numero_y_unidad(' - Mínima','min-height'));            
+            document.write(numero_y_unidad(' - Máxima','max-height')+'<br>');
             document.write('<fieldset><legend>Márgenes:</legend>\n');
             document.write(numero_y_unidad('Superior: ','margin-top')+'<br>');
             document.write(numero_y_unidad('Derecho: ','margin-right')+'<br>');

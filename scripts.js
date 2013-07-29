@@ -1,3 +1,7 @@
+/* #########################
+Funciones de texto 
+############################*/
+
 function habilitarBoton(elemento, boton) {
 	if(elemento.value.length>0) {
 			boton.disabled=false;	
@@ -49,17 +53,7 @@ function colorTexto(color) {
         agregar('color: #'+color.value+';\n')    
     }
 }
-	
 
-function agregar(valor) {
-	if(valor.indexOf("nada;\n")==-1) {
-	  	document.getElementById("codigo").value=document.getElementById("codigo").value+valor;
-	}
-	else {
-		var principio=valor.substr(0,(valor.indexOf(":")+1));
-		quitar(principio);	
-	}
-}
 /* #########################
 Funciones de fondo 
 ############################*/
@@ -407,6 +401,15 @@ function agregarImagenLista(elemento) {
 /*###########################
      Funciones generales
 ############################*/
+function agregar(valor) {
+	if(valor.indexOf("nada;\n")==-1) {
+	  	document.getElementById("codigo").value=document.getElementById("codigo").value+valor;
+	}
+	else {
+		var principio=valor.substr(0,(valor.indexOf(":")+1));
+		quitar(principio);	
+	}
+}
 function quitar(cadena)
 {	
 	//Quita el/los renglón/es que tenga/n "cadena" en el textarea id="codigo"
@@ -477,4 +480,18 @@ function quitarColor(cadena) {
 	}
 	//"nueva" es el nuevo contenido del textarea.
 	document.getElementById("codigo").value = nueva;
+}
+
+function mostrarPestania(ident) {
+    //Obtengo el id de la pestaña a mostrar:    
+    var ident2=ident.substr(0,ident.indexOf("_pest"));    
+    var tab = document.getElementById(ident2);
+    //Oculto todas las pestañas:
+    document.getElementById("texto").style.display="none";
+    document.getElementById("fondo").style.display="none";
+    document.getElementById("borde").style.display="none";
+    document.getElementById("caja").style.display="none";
+    document.getElementById("lista").style.display="none";
+    //Muestro a pestaña:
+    tab.style.display="block";    
 }
