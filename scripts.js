@@ -1,7 +1,39 @@
 /* #########################
 Funciones de texto 
 ############################*/
-
+function tipog(tipografia) {
+    quitar("font-family:");
+    if(tipografia.id=="tipografia"){
+        var b=document.getElementById("tipog_pers");
+        if(tipografia.value=="nada") {
+        b.value='';
+        b.readOnly=true;             
+        }
+        if(tipografia.value=="serif") {
+            b.value='"Times New Roman", Times, serif';
+            b.readOnly=true;
+            agregar("font-family: '" + b.value + "';\n");    
+        }
+        if(tipografia.value=="sans-serif") {
+            b.value='Arial, Helvetica, sans-serif';
+            b.readOnly=true;
+            agregar("font-family: '" + b.value + "';\n");        
+        }
+        if(tipografia.value=="monospace") {
+            b.value='"Courier New", Courier, monospace';
+            b.readOnly=true;
+            agregar("font-family: '" + b.value + "';\n");
+        }
+        if(tipografia.value=="personal") {
+            b.value='';
+            b.readOnly=false;
+            b.focus();
+        }
+    }      
+    else if(tipografia.value != '' && tipografia.value.length!=0) {
+        agregar("font-family: '" + tipografia.value + "';\n");
+    }
+}
 function habilitarBoton(elemento, boton) {
 	if(elemento.value.length>0) {
 			boton.disabled=false;	
@@ -494,4 +526,68 @@ function mostrarPestania(ident) {
     document.getElementById("lista").style.display="none";
     //Muestro a pestaña:
     tab.style.display="block";    
+}
+
+function pegarCodigo() {
+    var ta = document.getElementById("codigoPegado");
+    ta.value='';    
+    document.getElementById("pegarCodigo").style.display="block";
+    ta.focus();    
+}
+
+function pegarCodigoListo() {
+    var ta = document.getElementById("codigoPegado");
+    var cod = document.getElementById("codigo");    
+    if (analizarCodigo(ta.value)) {
+        document.getElementById("pegarCodigo").style.display="none";
+        cod.value=ta.value;
+        ta.value='';  
+    }    
+}
+
+function analizarCodigo(cod) {
+    //Recibe el código pegado y setea las opciones correspondientes.
+    //Quito saltos de línea:    
+    var aux='';    
+    for(var i=0; i<cod.length; i++) {
+        if (cod[i]!='\n') {
+            aux += cod[i];        
+        }    
+    }
+    cod=aux;
+    //alert(cod);
+    var reglas = cod.split(';')
+    var unaRegla;
+    var hayErrores = "No hay errores";    
+    for(i=0;i<reglas.length;i++) {
+        unaRegla = trim(reglas[i]);
+        //alert(unaRegla);
+        if (!setearInputs(unaRegla)) {
+            if(hayErrores=="No hay errores") {
+                hayErrores="Hay error(es) en la(s) línea(s):\n";
+            }
+            hayErrores += i + ": " + unaRegla + ";\n";            
+        }
+    }
+    if(hayErrores=="No hay errores") {
+        return true;
+    }
+    else {
+        alert(hayErrores);
+        return false;
+    }    
+}
+
+function setearInputs(regla) {
+    var prop = regla.substr(0,regla.indexOf(":"));
+    var valor = regla.substr(regla.indexOf(':')+1);
+    //TODO Acá van todos los if para poder setear los inputs como corresponda.    
+    return true;    
+}
+function trim(cadena) {
+	return cadena.replace(/^\s+|\s+$/g,"");
+}
+function esEspacioEnBlanco(caracter) {
+	var blancos = " \t\n\r\f";
+	return (blancos.indexOf(caracter) != -1);
 }

@@ -51,8 +51,6 @@ function numero_y_unidad(etiqueta, ident, habilitado=true) {
 }
 function habilitarEsquinasMultiples(esUnaSola) {
 	var cadena="";
-	//TODO: Hay que hacerlo especialmente: 
-	// quitar("radius");
 	if(esUnaSola) {
 		cadena = cadena + "<label for=\"tipo_esquina\">Tipo de esquinas:</label>\n";
 		cadena = cadena + "<select id=\"tipo_esquina\" onchange=\"habilitarEsquinas(this,'')\">\n";
@@ -104,31 +102,25 @@ function habilitarEsquinasMultiples(esUnaSola) {
     <section id="texto" class="tab">
     	  <h3>Texto</h3>
         <label for="tipografia tipog_pers">Tipografía: </label>
-        <select id="tipografia" onchange="habilitarPersonalizado(this,document.getElementById('tipog_pers'))">
+        <select id="tipografia" onchange="tipog(this)">
             <option value="nada">Sin especificar</option>
             <option value="serif">Serif</option>
             <option value="sans-serif">Sans-Serif</option>
             <option value="monospace">Monospace</option>
             <option value="personal">Personalizado</option>                
         </select>
-        <input id="tipog_pers" readonly>
-        <button onclick='quitar("font-family:");agregar("font-family: " + document.getElementById("tipog_pers").value + ";\n")' disabled id="boton_tipog">Generar código</button><br>
+        <input id="tipog_pers" readonly onkeyup="tipog(this)" onblur="tipog(this)">
+        <!--<button onclick='botonTipog()' disabled id="boton_tipog">Generar código</button> -->
+        <br>
 		  
-		  <label for="tamanoTexto tamanoTexto_unidades">Tamaño de texto: </label>
-		  <input type="number" size="4" id="tamanoTexto" onkeyup="habilitarBoton(this, document.getElementById('boton_tamano'))">
-		  <script>unidades("tamanoTexto")</script>
-		  <button onclick="quitar('font-size')agregar('font-size: ' + tamanoTexto.value + tamanoTexto_unidades.value + ';\n')" disabled id="boton_tamano">Generar código</button><br>
-		  
-		  <label for="altLinea altLinea_unidades">Altura de línea: </label>
-		  <input type="number" size="4" id="altLinea" onkeyup="habilitarBoton(this, document.getElementById('boton_altLinea'))">
-		  <script>unidades("altLinea")</script>
-		  <button onclick="quitar('line-height');agregar('line-height: ' + altLinea.value + altLinea_unidades.value + ';\n')" disabled id="boton_altLinea">Generar código</button><br>
-		  
-		  <label for="color_texto">Color: </label>
-		  <!--<span id="muestra_color_texto" onclick="colorPicker(this)" style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
-		  <input id="color_texto" class="color {required:false}" onchange="colorTexto(this)"><br>
-		  		    
-		  <label for="peso">"Peso":</label>        
+		<script>
+		    document.write(numero_y_unidad('Tamaño de texto','font-size')+'<br>');
+		    document.write(numero_y_unidad('Altura de línea','line-height')+'<br>');
+		</script>  
+		<label for="color_texto">Color: </label>
+		<input id="color_texto" class="color {required:false}" onchange="colorTexto(this)"><br>
+		
+		<label for="peso">"Peso":</label>        
         <select id="peso" onchange="quitar('font-weight:');agregar('font-weight: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
         		<option value="normal">Normal</option>
@@ -137,7 +129,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
         		<option value="lighter">Más claro</option>		        		
         </select><br>
         
-		  <label for="estilo">Estilo: </label>        
+		<label for="estilo">Estilo: </label>        
         <select id="estilo" onchange="quitar('font-style:');agregar('font-style: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
         		<option value="italic">Itálica ("cursiva")</option>        				        		
@@ -175,7 +167,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
     
     <section id="fondo" class="tab">
       <h3>Fondo</h3>
-    	
+      <p class="recordatorio">No te olvides de pulsar el botón "Generar código" al terminar</p>
     	<label for="color_fondo">Color: </label>		
 		<input id="color_fondo" class="color {required:false,onImmediateChange:'colorFondoRGB(this);'}" onblur="habilitar_color_fondo();"><br>
 		<input type="hidden" id="RGBFondo">
@@ -212,6 +204,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
     
     <section id="borde" class="tab">
 		<h3>Bordes</h3>
+		<p class="recordatorio">No te olvides de pulsar el botón "Generar bordes" al terminar</p>
 		<input id="cuatroBordes" type="checkbox" onclick="habilitarBordes(this.checked)" checked>
 		<label for="cuatroBordes">Los 4 bordes son iguales</label><br>								
 		<fieldset id="bordeUnico">
@@ -248,7 +241,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 			<label for="transparencia_borde">Transparente (0)</label>
 			<input id="transparencia_borde" type="range" min="0" max="1" value="1" step="0.01">
 			<label for="transparencia_borde">Opaco (1)</label><br>
-			<button onclick="generarBordes(1)">Generar código</button>		
+			<button onclick="generarBordes(1)">Generar bordes</button>		
 		</fieldset>
 		
 
@@ -388,10 +381,11 @@ function habilitarEsquinasMultiples(esUnaSola) {
 			<input id="transparencia_bordeIZQUIERDA" type="range" min="0" max="1" value="1" step="0.01">
 			<label for="transparencia_bordeIZQUIERDA">Opaco (1)</label><br>
 		</fieldset>
-		<button onclick="generarBordes(4)" id="botonCuatroBordes" style="display:none;">Generar código</button>
+		<button onclick="generarBordes(4)" id="botonCuatroBordes" style="display:none;">Generar bordes</button>
 		
 		<input id="cuatroEsq" type="checkbox" onclick="quitar('radius');habilitarEsquinasMultiples(this.checked)" checked>
 		<label for="cuatroEsq">Las 4 esquinas son iguales</label><br>
+		<p class="recordatorio">No te olvides de pulsar el botón "Generar esquinas" al terminar</p>
 		<div id="cantidadDeEsquinas"></div>
 		<script>habilitarEsquinasMultiples(true);</script>		
 		<div id="muestra_bordes"></div>
@@ -503,7 +497,13 @@ function habilitarEsquinasMultiples(esUnaSola) {
 </section>
 <section id="salida">
     <h2>Código generado:</h2>
-    <textarea id="codigo" cols="80" rows="10" readonly></textarea>
+    <textarea id="codigo" cols="80" rows="10" readonly></textarea><br>
+    <button id="botonPegarCodigo" onclick="pegarCodigo()">Pegar código</button>
+</section>
+<section id="pegarCodigo">
+    <h2>Pegar código</h2>
+    <textarea id="codigoPegado" cols="80" rows="10"></textarea><br>
+    <button id="botonPegarCodigoListo" onclick="pegarCodigoListo()">Listo</button>
 </section>
 </article>
 <script>
