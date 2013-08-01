@@ -132,12 +132,14 @@ function habilitarEsquinasMultiples(esUnaSola) {
 		<label for="estilo">Estilo: </label>        
         <select id="estilo" onchange="quitar('font-style:');agregar('font-style: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
+        		<option value="normal">Normal</option>
         		<option value="italic">Itálica ("cursiva")</option>        				        		
         </select><br>
         
         <label for="may_min">Mayúsculas/Minúsculas: </label>        
         <select id="may_min" onchange="quitar('text-transform:');agregar('text-transform: ' + this.value + ';\n')">
         		<option value="nada">Sin especificar</option>
+        		<option value="none">Sin cambios</option>
         		<option value="lowercase">Minúsculas</option>        				        		
         		<option value="uppercase">Mayúsculas</option>
         		<option value="capitalize">Primer Letra Mayúscula</option>
@@ -148,6 +150,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
         		<option value="nada">Sin especificar</option>
         		<option value="left">Izquierda</option>        				        		
         		<option value="right">Derecha</option>
+        		<option value="center">Centrado</option>
         		<option value="justify">Justificar</option>
         </select><br>
         
@@ -160,7 +163,9 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<input type="checkbox" value="text-decoration: blink;" id="deco_4" onclick="opcionCheckbox(this)">
 				<label for="deco_4">Parpadear (¡queda feo!) -- </label>
 				<input type="checkbox" value="text-decoration: line-through;" id="deco_5" onclick="opcionCheckbox(this)">
-				<label for="deco_5">Tachado</label>				        
+				<label for="deco_5">Tachado</label>
+				<input type="checkbox" value="text-decoration: none" id="deco_6" onclick="anularDecoracion(this)">
+				<label for="deco_6">Sin decoración</label>				        
         </fieldset>
         
     </section>

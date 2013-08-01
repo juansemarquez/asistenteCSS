@@ -1,9 +1,9 @@
 /* #########################
 Funciones de texto 
 ############################*/
-function tipog(tipografia) {
-    quitar("font-family:");
+function tipog(tipografia) {    
     if(tipografia.id=="tipografia"){
+        quitar("font-family:");    
         var b=document.getElementById("tipog_pers");
         if(tipografia.value=="nada") {
         b.value='';
@@ -12,17 +12,17 @@ function tipog(tipografia) {
         if(tipografia.value=="serif") {
             b.value='"Times New Roman", Times, serif';
             b.readOnly=true;
-            agregar("font-family: '" + b.value + "';\n");    
+            agregar("font-family: " + b.value + ";\n");    
         }
         if(tipografia.value=="sans-serif") {
             b.value='Arial, Helvetica, sans-serif';
             b.readOnly=true;
-            agregar("font-family: '" + b.value + "';\n");        
+            agregar("font-family: " + b.value + ";\n");        
         }
         if(tipografia.value=="monospace") {
             b.value='"Courier New", Courier, monospace';
             b.readOnly=true;
-            agregar("font-family: '" + b.value + "';\n");
+            agregar("font-family: " + b.value + ";\n");
         }
         if(tipografia.value=="personal") {
             b.value='';
@@ -30,19 +30,24 @@ function tipog(tipografia) {
             b.focus();
         }
     }      
-    else if(tipografia.value != '' && tipografia.value.length!=0) {
+    else if(tipografia.value != '' && tipografia.value.length!=0) {  
+        if(tipografia.readOnly) {return;}
+        quitar("font-family:");
         agregar("font-family: '" + tipografia.value + "';\n");
     }
+    else {
+        quitar("font-family:");
+    }
 }
-function habilitarBoton(elemento, boton) {
+/*function habilitarBoton(elemento, boton) {
 	if(elemento.value.length>0) {
 			boton.disabled=false;	
 	}
 	else {
 			boton.disabled=true;	
 	}
-}
-function habilitarPersonalizado(a,b) {    
+}*/
+/*function habilitarPersonalizado(a,b) {    
     if(a.value=="nada") {
         b.value='';
         b.readOnly=true;
@@ -70,7 +75,7 @@ function habilitarPersonalizado(a,b) {
         b.focus();
         document.getElementById("boton_tipog").disabled=false;
     }        
-}
+}*/
 function opcionCheckbox(cb) {
 	if(cb.checked==true) {
 		agregar(cb.value + "\n");
@@ -83,6 +88,27 @@ function colorTexto(color) {
     quitarColor('color:');
     if(color.value!='Sin especificar' && color.value.length!=0) {
         agregar('color: #'+color.value+';\n')    
+    }
+}
+function anularDecoracion(cb) {
+    if(cb.checked) {
+        document.getElementById("deco_2").disabled=true;
+        document.getElementById("deco_3").disabled=true;
+        document.getElementById("deco_4").disabled=true;
+        document.getElementById("deco_5").disabled=true;
+        quitar('text-decoration: ');
+        agregar('text-decoration: none;\n');
+    }
+    else {
+        document.getElementById("deco_2").disabled=false;
+        document.getElementById("deco_3").disabled=false;
+        document.getElementById("deco_4").disabled=false;
+        document.getElementById("deco_5").disabled=false;
+        document.getElementById("deco_2").checked=false;
+        document.getElementById("deco_3").checked=false;
+        document.getElementById("deco_4").checked=false;
+        document.getElementById("deco_5").checked=false;
+        quitar('text-decoration: none;');        
     }
 }
 
@@ -528,6 +554,11 @@ function mostrarPestania(ident) {
     tab.style.display="block";    
 }
 
+
+/*###########################
+  Funciones de pegar código
+############################*/
+
 function pegarCodigo() {
     var ta = document.getElementById("codigoPegado");
     ta.value='';    
@@ -561,8 +592,11 @@ function analizarCodigo(cod) {
     var hayErrores = "No hay errores";    
     for(i=0;i<reglas.length;i++) {
         unaRegla = trim(reglas[i]);
-        //alert(unaRegla);
+        //alert(unaRegla.length);
+        //var sarasa = setearInputs(unaRegla)
+        //alert('Regla: ' + unaRegla + '\nResult: ' + sarasa);        
         if (!setearInputs(unaRegla)) {
+        //if(!sarasa) {
             if(hayErrores=="No hay errores") {
                 hayErrores="Hay error(es) en la(s) línea(s):\n";
             }
@@ -579,10 +613,176 @@ function analizarCodigo(cod) {
 }
 
 function setearInputs(regla) {
-    var prop = regla.substr(0,regla.indexOf(":"));
-    var valor = regla.substr(regla.indexOf(':')+1);
-    //TODO Acá van todos los if para poder setear los inputs como corresponda.    
-    return true;    
+    //Si la regla está vacía, no pasa nada:
+    if (regla.length==0) {return true;}
+    //Si no hay dos puntos, la regla es errónea:    
+    if (regla.indexOf(':')==-1) {return false;}
+    //Separo propiedad: valor; 
+    var prop = trim(regla.substr(0,regla.indexOf(":")));
+    var valor = trim(regla.substr(regla.indexOf(':')+1));    
+    
+    //Ahora van toooooodos los if para poder setear los inputs como corresponda.
+    
+    //######################################
+    //                 TEXTO
+    //######################################
+    if (prop=="font-family") {
+        document.getElementById("tipog_pers").value=valor;
+        if (valor=="\"Times New Roman\", Times, serif") {
+            document.getElementById("tipografia").value="serif";
+            document.getElementById("tipog_pers").readonly=true;
+        }
+        else if (valor=="Arial, Helvetica, sans-serif") {
+            document.getElementById("tipografia").value="sans-serif";
+            document.getElementById("tipog_pers").readonly=true;
+        }
+        else if (valor=='"Courier New", Courier, monospace') {
+            document.getElementById("tipografia").value="monospace";
+            document.getElementById("tipog_pers").readonly=true;
+        }
+        else {
+            document.getElementById("tipografia").value="personal";
+            document.getElementById("tipog_pers").readonly=false;
+        }
+        return true;
+    }
+    else if (prop=="font-size") {
+        return constaDeNumeroYUnidad(prop,valor);
+    }
+    else if (prop=="line-height") {
+        return constaDeNumeroYUnidad(prop,valor);
+    }
+    else if (prop=="color") {        
+        if(valor[0]!='#') {
+            valor = convertirNombreColorHexa(valor);
+            //alert(valor);
+            if (valor=="Error") {return false;}       
+        }
+        if(valor.length==7||valor.length==4) {           
+            //Si el color está expresado en tres caracteres, lo represento con 6 y quito el #:            
+            if(valor.length==4) {
+                var col=valor[1]+valor[1]+valor[2]+valor[2]+valor[3]+valor[3];                           
+            }
+            //Si no, le quito el # solamente
+            else {
+                var col=valor.substr(1);
+            }
+            //Valido que solo se use 0-9 A-F
+            var validos = "0123456789ABCDEF";
+            col=col.toUpperCase();
+            for(var i=1; i<6; i++) {
+                if(validos.indexOf(col[i])==-1) {
+                    return false;
+                }
+            }
+            document.getElementById("color_texto").value=col;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    else if (prop == "font-weight") {
+        if(valor=="normal"||valor=="bold"||valor=="bolder"||valor=="lighter") {
+            document.getElementById("peso").value=valor;
+            return true;
+        }
+        else {
+            return false;
+        }    
+    }
+    else if (prop == "font-style") {
+        if(valor=="normal"||valor=="italic") {
+            document.getElementById("estilo").value=valor;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if (prop == "text-transform") {
+        if(valor=="lowercase"||valor=="uppercase"||valor=="capitalize"||valor=="none") {
+            document.getElementById("may_min").value=valor;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }    
+    else if (prop == "text-align") {
+        if(valor=="left"||valor=="right"||valor=="center"||valor=="justify") {
+            document.getElementById("alineacion").value=valor;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if (prop == "text-decoration") {
+        if (valor=="underline") {
+            document.getElementById("deco_2").checked=true;
+        }
+        else if (valor=="overline") {
+            document.getElementById("deco_3").checked=true;
+        }
+        else if (valor=="blink") {
+            document.getElementById("deco_4").checked=true;
+        }
+        else if (valor=="line-through") {
+            document.getElementById("deco_5").checked=true;
+        }
+        else if (valor=="none") {
+            document.getElementById("deco_6").checked=true;
+            anularDecoracion(document.getElementById("deco_6"));
+            return true;        
+        }
+        else {
+            return false;
+        }
+        return true;          
+    }
+}
+
+
+function constaDeNumeroYUnidad(prop,valor) {
+        var aux = separarUnidadNumero(valor);
+        if(aux[0]=="Error") {return false;}        
+        var unidad = aux[1];
+        var val = aux[0];
+        document.getElementById(prop).value=val;
+        document.getElementById(prop + "_unidades").value=unidad;  
+        return true;
+}
+    
+function separarUnidadNumero(valor) {
+        if(valor=="0") {
+            var nroUnidad=new Array("0","px");
+            return nroUnidad;
+        }
+        var unidad;
+        var numero;                
+        if (valor[valor.length-1]=="%") {
+            numero=valor.substr(0,valor.length-1);
+            unidad="%";            
+        }
+        else {
+            unidad=valor[valor.length-2]+valor[valor.length-1];
+            numero=valor.substr(0,valor.length-2);            
+        }
+        //alert(numero+' NU '+unidad);
+        if (unidad!="%"&&unidad!="px"&&unidad!="em"&&unidad!="cm"&&unidad!="mm"&&unidad!="in"&&unidad!="pt"&&unidad!="ex") {
+            //La unidad no es reconocida
+            var nroUnidad=new Array("Error","Error");
+        }
+        else {
+            
+            var nroUnidad=new Array(numero,unidad);
+        }
+        //alert (nroUnidad[0] + 'NU' + nroUnidad[1]);
+        return nroUnidad;
 }
 function trim(cadena) {
 	return cadena.replace(/^\s+|\s+$/g,"");
@@ -590,4 +790,15 @@ function trim(cadena) {
 function esEspacioEnBlanco(caracter) {
 	var blancos = " \t\n\r\f";
 	return (blancos.indexOf(caracter) != -1);
+}
+
+function convertirNombreColorHexa(nombreColor)
+{
+    var colores = {"aliceblue":"#f0f8ff", "antiquewhite":"#faebd7", "aqua":"#00ffff", "aquamarine":"#7fffd4", "azure":"#f0ffff", "beige":"#f5f5dc", "bisque":"#ffe4c4", "black":"#000000", "blanchedalmond":"#ffebcd", "blue":"#0000ff", "blueviolet":"#8a2be2", "brown":"#a52a2a", "burlywood":"#deb887",    "cadetblue":"#5f9ea0", "chartreuse":"#7fff00", "chocolate":"#d2691e", "coral":"#ff7f50", "cornflowerblue":"#6495ed", "cornsilk":"#fff8dc", "crimson":"#dc143c", "cyan":"#00ffff",    "darkblue":"#00008b", "darkcyan":"#008b8b", "darkgoldenrod":"#b8860b", "darkgray":"#a9a9a9", "darkgreen":"#006400", "darkkhaki":"#bdb76b", "darkmagenta":"#8b008b", "darkolivegreen":"#556b2f",    "darkorange":"#ff8c00", "darkorchid":"#9932cc", "darkred":"#8b0000", "darksalmon":"#e9967a", "darkseagreen":"#8fbc8f", "darkslateblue":"#483d8b", "darkslategray":"#2f4f4f", "darkturquoise":"#00ced1",    "darkviolet":"#9400d3", "deeppink":"#ff1493", "deepskyblue":"#00bfff", "dimgray":"#696969", "dodgerblue":"#1e90ff", "firebrick":"#b22222", "floralwhite":"#fffaf0", "forestgreen":"#228b22", "fuchsia":"#ff00ff", "gainsboro":"#dcdcdc", "ghostwhite":"#f8f8ff", "gold":"#ffd700", "goldenrod":"#daa520", "gray":"#808080", "green":"#008000", "greenyellow":"#adff2f", "honeydew":"#f0fff0", "hotpink":"#ff69b4", "indianred ":"#cd5c5c", "indigo ":"#4b0082", "ivory":"#fffff0", "khaki":"#f0e68c", "lavender":"#e6e6fa", "lavenderblush":"#fff0f5", "lawngreen":"#7cfc00", "lemonchiffon":"#fffacd", "lightblue":"#add8e6", "lightcoral":"#f08080", "lightcyan":"#e0ffff", "lightgoldenrodyellow":"#fafad2", "lightgrey":"#d3d3d3", "lightgreen":"#90ee90", "lightpink":"#ffb6c1", "lightsalmon":"#ffa07a", "lightseagreen":"#20b2aa", "lightskyblue":"#87cefa", "lightslategray":"#778899", "lightsteelblue":"#b0c4de", "lightyellow":"#ffffe0", "lime":"#00ff00", "limegreen":"#32cd32", "linen":"#faf0e6", "magenta":"#ff00ff", "maroon":"#800000", "mediumaquamarine":"#66cdaa", "mediumblue":"#0000cd", "mediumorchid":"#ba55d3", "mediumpurple":"#9370d8", "mediumseagreen":"#3cb371", "mediumslateblue":"#7b68ee", "mediumspringgreen":"#00fa9a", "mediumturquoise":"#48d1cc", "mediumvioletred":"#c71585", "midnightblue":"#191970", "mintcream":"#f5fffa", "mistyose":"#ffe4e1", "moccasin":"#ffe4b5", "navajowhite":"#ffdead", "navy":"#000080", "oldlace":"#fdf5e6", "olive":"#808000", "olivedrab":"#6b8e23", "orange":"#ffa500", "orangered":"#ff4500", "orchid":"#da70d6", "palegoldenrod":"#eee8aa", "palegreen":"#98fb98", "paleturquoise":"#afeeee", "palevioletred":"#d87093", "papayawhip":"#ffefd5", "peachpuff":"#ffdab9", "peru":"#cd853f", "pink":"#ffc0cb", "plum":"#dda0dd", "powderblue":"#b0e0e6", "purple":"#800080", "red":"#ff0000", "rosybrown":"#bc8f8f", "royalblue":"#4169e1", "saddlebrown":"#8b4513", "salmon":"#fa8072", "sandybrown":"#f4a460", "seagreen":"#2e8b57", "seashell":"#fff5ee", "sienna":"#a0522d", "silver":"#c0c0c0", "skyblue":"#87ceeb", "slateblue":"#6a5acd", "slategray":"#708090", "snow":"#fffafa", "springgreen":"#00ff7f", "steelblue":"#4682b4", "tan":"#d2b48c", "teal":"#008080", "thistle":"#d8bfd8", "tomato":"#ff6347", "turquoise":"#40e0d0", "violet":"#ee82ee", "wheat":"#f5deb3", "white":"#ffffff", "whitesmoke":"#f5f5f5", "yellow":"#ffff00", "yellowgreen":"#9acd32"};
+    //var x = colores[nombreColor.toLowerCase()];
+    //alert(x);    
+    if (typeof colores[nombreColor.toLowerCase()] != 'undefined') {
+        return colores[nombreColor.toLowerCase()];
+    }
+    else {return "Error";}
 }
