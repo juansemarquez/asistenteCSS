@@ -139,11 +139,20 @@ function habilitar_imagen_fondo() {
 		document.getElementById("ubic_fondo").disabled=true;
 		document.getElementById("fixed").disabled=true;
 		if(document.getElementById("color_fondo").value=='Sin especificar') {		
-			document.getElementById("generar_fondo").disabled=false;
+			document.getElementById("generar_fondo").disabled=true;
 		}	
 	}
 		
 }
+
+function habilitar_todo_fondo() {
+    document.getElementById("transparencia_fondo").disabled=false;
+    document.getElementById("repetir").disabled=false;
+    document.getElementById("ubic_fondo").disabled=false;
+    document.getElementById("fixed").disabled=false;
+    document.getElementById("generar_fondo").disabled=false;    
+}
+
 function fondo() {
 	quitar('background');
 	var cadena= "";
@@ -624,7 +633,7 @@ function setearInputs(regla) {
     //Ahora van toooooodos los if para poder setear los inputs como corresponda.
     
     //######################################
-    //                 TEXTO
+    //                 +TEXTO
     //######################################
     if (prop=="font-family") {
         document.getElementById("tipog_pers").value=valor;
@@ -744,6 +753,103 @@ function setearInputs(regla) {
         }
         return true;          
     }
+    //######################################
+    //                 +FONDO
+    //######################################
+    else if (prop=="background-color") {
+        if (valor.indexOf("rgba(")==-1) {
+            if(valor[0]!='#') {
+                valor = convertirNombreColorHexa(valor);
+                //alert(valor);
+                if (valor=="Error") {return false;}       
+            }
+            if(valor.length==7||valor.length==4) {           
+                //Si el color está expresado en tres caracteres, lo represento con 6 y quito #:            
+                if(valor.length==4) {
+                    var col = valor[1]+valor[1]+valor[2]+valor[2]+valor[3]+valor[3];
+                }
+                //Si no, le quito el # solamente
+                else {
+                    var col=valor.substr(1);
+                }
+                //Valido que solo se use 0-9 A-F
+                var validos = "0123456789ABCDEF";
+                col=col.toUpperCase();
+                for(var i=1; i<6; i++) {
+                    if(validos.indexOf(col[i])==-1) {
+                        return false;
+                    }
+                }   
+                document.getElementById("color_fondo").value=col;
+                habilitar_todo_fondo();                
+                var unEntero = parseInt(col, 16);
+                var r = (unEntero >> 16) & 255;
+                var g = (unEntero >> 8) & 255;
+                var b = unEntero & 255;
+                r = Math.round((r/255)*10000)/100;
+                g = Math.round((g/255)*10000)/100;
+                b = Math.round((b/255)*10000)/100;
+                document.getElementById("RGBFondo").value=r + "%," + g + "%," + b + "%";
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {            
+            //Obtengo el valor de la transparencia:
+            var transp = valor.substr(valor.lastIndexOf(",")+1);
+            //Le saco el parentesis final:
+            transp = transp.substr(0,transp.length-1);
+            //Habilito y asigno en controles
+            habilitar_todo_fondo();
+            document.getElementById("transparencia_fondo").value=transp;
+            return true;
+        }
+    }
+    else if (prop=="background-image") {
+        //Obtengo el valor de la URL
+        var url=valor.substr(valor.indexOf('url(')+5);
+        url=url.substr(0,url.length-2);        
+        habilitar_todo_fondo();
+        document.getElementById("imagen_fondo").value=url;
+        return true;
+    }
+    else if (prop=="background-repeat") {
+        if(valor=="no-repeat"||valor=="repeat-x"||valor=="repeat-y"||valor=="repeat") {
+            habilitar_todo_fondo();
+            document.getElementById("repetir").value=valor;
+            return true;        
+        }
+        else {
+            return false;        
+        }
+    }
+    else if (prop=="background-position") {
+        if(valor=="left top"|| valor=="left center" || valor== "left bottom" ||
+            valor=="center top" || valor=="center center" || valor=="center bottom" ||
+            valor=="right top" || valor=="right center" || valor=="right bottom") {
+            document.getElementById("ubic_fondo").value=valor;
+            habilitar_todo_fondo();
+            return true;
+         }
+         else {
+            return false;         
+         }        
+    }
+    else if (prop=="background-attachment") {
+        if (valor=="fixed") {
+            document.getElementById("fixed").checked=false;
+            habilitar_todo_fondo();
+            return true;       
+        }
+        else {
+            return false;
+        }            
+    }
+    //######################################
+    //                 +BORDE
+    //######################################
 }
 
 
