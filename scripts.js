@@ -908,7 +908,7 @@ function setearInputs(regla) {
         else {return false;}
     }
     else if(prop=="z-index") {
-        //TODO: Validar que sea numérico
+        //TODO: Validar que sea numÃ©rico
         return cajaPegarCodigo(prop,valor);        
     }
     else if(prop=="width"||prop=="max-width"||prop=="min-width"||
@@ -952,17 +952,17 @@ function setearInputs(regla) {
         else { return false; }
     }
     else {
-        //Agoté todas las posibilidades y ninguna coincidió:        
+        //AgotÃ© todas las posibilidades y ninguna coincidiÃ³:        
         return false;
-    }           
+    }
 }
 
 function cajaPegarCodigo(prop,valor) {
     document.getElementById(prop).value=valor;
     return true;
 }
-
-function bordePegarCodigo(prop,valor) {
+ 
+function bordePegarCodigo(prop,valor) {    
     var posicion; 
     var pos;   
     if (prop.indexOf("top-")!=-1) {
@@ -1085,7 +1085,7 @@ function bordePegarEsquinas(valor,posicion) {
         document.getElementById("radio2"+posicion).disabled=false;
         return true;
     }
-}
+} 
 
 function constaDeNumeroYUnidad(prop,valor,id="",posicion="") {
     if(id==""||id.length==0) {id=prop;}
