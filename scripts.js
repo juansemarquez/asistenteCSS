@@ -461,7 +461,7 @@ function habilitarPosicionamiento(elemento) {
 function agregarImagenLista(elemento) {
     quitar('list-style-image:');
     if(elemento.value!="Sin especificar" && elemento.value.length!=0 && elemento.value!='') {
-            agregar('list-style-image: ' + elemento.value + ';\n');
+            agregar("list-style-image: url('" + elemento.value + "');\n");
     }
 }
 
@@ -616,8 +616,7 @@ function analizarCodigo(cod) {
         return true;
     }
     else {
-        alert(hayErrores);
-        return false;
+        return confirm(hayErrores+"\nDesea continuar de todos modos?");
     }    
 }
 
@@ -854,9 +853,116 @@ function setearInputs(regla) {
     {
         return bordePegarCodigo(prop,valor)
     }
+    //######################################
+    //                 +ESQUINAS
+    //######################################
+    else if(prop.indexOf("border")!=-1&&prop.indexOf("radius")!=-1) {
+        var cuatroEsq=document.getElementById("cuatroEsq");
+        var posicion;
+        if(prop.indexOf("-top-right")!=-1) { posicion="-top-right";}
+        else if(prop.indexOf("-top-left")!=-1) { posicion="-top-left";}
+        else if(prop.indexOf("-bottom-right")!=-1) { posicion="-bottom-right";}
+        else if(prop.indexOf("-bottom-left")!=-1) { posicion="-top-left";}
+        else {posicion="";}        
+        if((posicion=="" || posicion.length==0) && cuatroEsq.checked==false) {
+            habilitarEsquinasMultiples(true);
+            cuatroEsq.checked=true;
+        }
+        else if(posicion!="" && posicion.length>0 && cuatroEsq.checked==true) {
+            habilitarEsquinasMultiples(false);
+            cuatroEsq.checked=false;
+        }
+        return bordePegarEsquinas(valor, posicion);        
+    }
+    //######################################
+    //                 +CAJA
+    //######################################
+    else if(prop=="display") {
+        if(valor=="none"||valor=="inline"||valor=="block") {
+            return cajaPegarCodigo(prop,valor);            
+        }
+        else {return false;}
+    }
+    else if(prop=="visibility") {
+        if(valor=="hidden"||valor=="visible"||valor=="collapse") {
+            return cajaPegarCodigo(prop,valor);            
+        }
+        else {return false;}       
+    }
+    else if(prop=="float") {
+        if(valor=="none"||valor=="right"||valor=="left") {
+            return cajaPegarCodigo(prop,valor);        
+        }
+        else {return false;}
+    }
+    else if(prop=="clear") {
+        if(valor=="none"||valor=="right"||valor=="left"||valor=="both") {
+            return cajaPegarCodigo(prop,valor);        
+        }
+        else {return false;}
+    }
+    else if(prop=="overflow") {
+        if(valor=="visible"||valor=="hidden"||valor=="scroll"||valor=="auto") {
+            return cajaPegarCodigo(prop,valor);        
+        }
+        else {return false;}
+    }
+    else if(prop=="z-index") {
+        //TODO: Validar que sea numérico
+        return cajaPegarCodigo(prop,valor);        
+    }
+    else if(prop=="width"||prop=="max-width"||prop=="min-width"||
+             prop=="height"||prop=="max-height"||prop=="min-height"||
+             prop=="margin-top"||prop=="margin-left"||prop=="margin-right"||prop=="margin-bottom"||
+             prop=="padding-top"||prop=="padding-left"||prop=="padding-right"||prop=="padding-bottom"||
+             prop=="top"||prop=="left"||prop=="right"||prop=="bottom") {
+        return constaDeNumeroYUnidad(prop,valor);    
+    }
+    else if(prop=="position") {
+        if(valor=="static" || valor=="fixed" || valor=="absolute" || valor=="relative") {
+            document.getElementById(prop).value=valor;
+            habilitarPosicionamiento(document.getElementById(prop));
+            return true;
+        }
+        else { return false; }   
+    }
+    //######################################
+    //                 +LISTA
+    //######################################
+    else if(prop=="list-style-type") {
+        if(valor=="none"||valor=="disc"||valor=="circle"||valor=="square"||valor=="decimal"
+           ||valor=="decimal-leading-zero"||valor=="lower-roman"||valor=="upper-roman"
+           ||valor=="lower-alpha"||valor=="upper-alpha"||valor=="lower-greek") {
+            return cajaPegarCodigo(prop,valor);        
+        }
+        else { return false;}
+    }
+    else if(prop=="list-style-image") {
+        if(valor.indexOf("url('")==-1||valor[valor.length-1]!=')'||valor[valor.length-2]!="'") {
+            return false;
+        }
+        else {
+            var aux=valor.substr(valor.indexOf("'")+1,valor.lastIndexOf("'")-valor.indexOf("'")-1);
+            document.getElementById("imagen_lista").value=aux;
+            return true;
+        }    
+    }
+    else if(prop=="list-style-position") {
+        if(valor=="inside"||valor=="outside") { return cajaPegarCodigo(prop,valor); }
+        else { return false; }
+    }
+    else {
+        //Agoté todas las posibilidades y ninguna coincidió:        
+        return false;
+    }           
 }
 
-function bordePegarCodigo(prop,valor) {    
+function cajaPegarCodigo(prop,valor) {
+    document.getElementById(prop).value=valor;
+    return true;
+}
+
+function bordePegarCodigo(prop,valor) {
     var posicion; 
     var pos;   
     if (prop.indexOf("top-")!=-1) {
@@ -952,6 +1058,34 @@ function bordePegarCodigo(prop,valor) {
     }
 }
 
+function bordePegarEsquinas(valor,posicion) {
+    if(valor.indexOf("px")==valor.lastIndexOf("px")) {
+        //Tiene un solo radio.
+        var aux = separarUnidadNumero(valor);
+        if (aux[0]=="Error") {
+            return false;                
+        }
+        else {
+            //alert("radio"+posicion);             
+            document.getElementById("radio"+posicion).value=aux[0];
+            document.getElementById("radio"+posicion).disabled=false;
+            document.getElementById("radio2"+posicion).disabled=true;                
+            document.getElementById("tipo_esquina"+posicion).value="circ";
+            return true;            
+        }
+    }
+    else { //tiene 2 radios
+        var r1=valor.substr(0,valor.indexOf("px"));
+        var r2=valor.substr(valor.indexOf("px")+3);
+        var aux=separarUnidadNumero(r2);
+        document.getElementById("tipo_esquina"+posicion).value="elipse";
+        document.getElementById("radio"+posicion).value=r1;
+        document.getElementById("radio"+posicion).disabled=false;
+        document.getElementById("radio2"+posicion).value=aux[0];
+        document.getElementById("radio2"+posicion).disabled=false;
+        return true;
+    }
+}
 
 function constaDeNumeroYUnidad(prop,valor,id="",posicion="") {
     if(id==""||id.length==0) {id=prop;}
@@ -990,9 +1124,11 @@ function separarUnidadNumero(valor) {
     //alert (nroUnidad[0] + 'NU' + nroUnidad[1]);
     return nroUnidad;
 }
+
 function trim(cadena) {
 	return cadena.replace(/^\s+|\s+$/g,"");
 }
+
 function esEspacioEnBlanco(caracter) {
 	var blancos = " \t\n\r\f";
 	return (blancos.indexOf(caracter) != -1);
