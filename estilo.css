@@ -38,7 +38,16 @@ body > .header > h1 {
     color: white;
     margin: 0 2px;
     border-top-right-radius: 10px;
-    border-top-left-radius: 10px;    
+    border-top-left-radius: 10px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: #444444;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right-color: #444444;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: #444444;        
 }
 #texto_pest {
     color: #444444;
@@ -46,7 +55,7 @@ body > .header > h1 {
 }
 #texto_pest:hover, #fondo_pest:hover, #borde_pest:hover, #caja_pest:hover, #lista_pest:hover {
     color: yellow;
-    background-color: #AAAAAA;        
+    background-color: #AAAAAA;            
 }
 .tab {
     display: none;
