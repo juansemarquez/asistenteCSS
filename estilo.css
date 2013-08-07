@@ -62,7 +62,7 @@ body > .header > h1 {
 p.recordatorio {
     color: red;
 }
-#pegarCodigo {
+#pegarCodigo, #advertNum {
     display:none;
     position: absolute;
     top: 20px;
@@ -75,5 +75,12 @@ p.recordatorio {
     border-radius: 20px;
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
-    box-shadow: 30px 30px 30px 5px #444444;
+    box-shadow: 30px 30px 30px 5px #444444;    
+}
+#salida {
+    text-align: center;
+}
+
+#seleccionar > h2 {
+    text-align: center;
 }

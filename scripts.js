@@ -564,6 +564,17 @@ function mostrarPestania(ident) {
 }
 
 
+
+function esNumero(num) {
+    if (num.value.length > 0 && !(num.value.match(/^[\-\+]?[\d\,]*\.?[\d]*$/))) {
+        document.getElementById('advertNum').style.display='block';
+        num.value=num.value.substr(0,num.value.length-1);
+        num.focus();
+        return false;
+    }
+    else { return true; }
+}
+
 /*###########################
   Funciones de pegar código
 ############################*/
@@ -588,6 +599,7 @@ function pegarCodigoListo() {
 function analizarCodigo(cod) {
     //Recibe el código pegado y setea las opciones correspondientes.
     //Quito saltos de línea:    
+    var j;
     var aux='';    
     for(var i=0; i<cod.length; i++) {
         if (cod[i]!='\n') {
@@ -599,6 +611,7 @@ function analizarCodigo(cod) {
     var reglas = cod.split(';')
     var unaRegla;
     var hayErrores = "No hay errores";    
+    limpiarTodo();
     for(i=0;i<reglas.length;i++) {
         unaRegla = trim(reglas[i]);
         //alert(unaRegla.length);
@@ -609,14 +622,15 @@ function analizarCodigo(cod) {
             if(hayErrores=="No hay errores") {
                 hayErrores="Hay error(es) en la(s) línea(s):\n";
             }
-            hayErrores += i + ": " + unaRegla + ";\n";            
+            j=i+1;
+            hayErrores += j + ": " + unaRegla + ";\n";            
         }
-    }
+    }    
     if(hayErrores=="No hay errores") {
         return true;
     }
     else {
-        return confirm(hayErrores+"\nDesea continuar de todos modos?");
+        return confirm(hayErrores+"\n¿Desea continuar de todos modos?");
     }    
 }
 
@@ -1142,4 +1156,89 @@ function convertirNombreColorHexa(nombreColor) {
         return colores[nombreColor.toLowerCase()];
     }
     else {return "Error";}
+}
+
+function limpiarTodo() {
+//Vuelve todos los inputs a su valor por defecto.
+    ///////TEXTO///////
+    document.getElementById("tipografia").value="nada";
+    document.getElementById("tipog_pers").value="";
+    document.getElementById("tipog_pers").readonly=true;    
+    document.getElementById("font-size").value="";
+    document.getElementById("line-height").value="";
+    document.getElementById("color_texto").value="";
+    document.getElementById("peso").value="nada";
+    document.getElementById("estilo").value="nada";
+    document.getElementById("may_min").value="nada";
+    document.getElementById("alineacion").value="nada";
+    document.getElementById("deco_2").checked=false;
+    document.getElementById("deco_3").checked=false;
+    document.getElementById("deco_4").checked=false;
+    document.getElementById("deco_5").checked=false;
+    document.getElementById("deco_6").checked=false;
+    ///////FONDO///////
+    document.getElementById("color_fondo").value="";
+    document.getElementById("RGBFondo").value="";
+    document.getElementById("transparencia_fondo").value="";
+    document.getElementById("transparencia_fondo").disabled=true;
+    document.getElementById("imagen_fondo").value="";
+    document.getElementById("repetir").value="nada";
+    document.getElementById("repetir").disabled=true;
+    document.getElementById("ubic_fondo").value="nada";
+    document.getElementById("ubic_fondo").disabled=true;
+    document.getElementById("fixed").checked=true;
+    document.getElementById("fixed").disabled=true;
+    document.getElementById("generar_fondo").disabled=true;
+    ///////BORDE///////
+    var lugar;
+    for (var i=0; i<5; i++) {
+        if (i==0) {lugar="";}
+        else if (i==1) {lugar="ARRIBA";}
+        else if (i==2) {lugar="DERECHA";}
+        else if (i==3) {lugar="ABAJO";}
+        else if (i==4) {lugar="IZQUIERDA";}
+        document.getElementById("tipo_borde"+lugar).value="nada";
+        document.getElementById("tamanoBorde"+lugar).value="";
+        document.getElementById("color_borde"+lugar).value="";
+        document.getElementById("bordeRGB"+lugar).value="";
+        document.getElementById("transparencia_borde"+lugar).value="";
+    }
+    document.getElementById("cuatroBordes").checked=true;
+    habilitarBordes(true);
+    habilitarEsquinasMultiples(true);
+    document.getElementById("cuatroEsq").checked=true;
+    document.getElementById("tipo_esquina").value="nada";
+    document.getElementById("radio").value="";
+    document.getElementById("radio2").value="";
+    ///////CAJA///////
+    document.getElementById("display").value="nada";
+    document.getElementById("visibility").value="nada";
+    document.getElementById("float").value="nada";
+    document.getElementById("clear").value="nada";
+    document.getElementById("overflow").value="nada";
+    document.getElementById("z-index").value="";
+    document.getElementById("width").value="";
+    document.getElementById("min-width").value="";
+    document.getElementById("max-width").value="";
+    document.getElementById("height").value="";
+    document.getElementById("min-height").value="";
+    document.getElementById("max-height").value="";
+    document.getElementById("position").value="nada";    
+    for(i=0;i<3;i++) {
+        if (i==0) {lugar="";}
+        else if (i==1) {lugar="margin-";}
+        else if (i==2) {lugar="padding-";}
+        document.getElementById(lugar+"top").value="";
+        document.getElementById(lugar+"right").value="";
+        document.getElementById(lugar+"bottom").value="";
+        document.getElementById(lugar+"left").value="";
+    }
+    document.getElementById("top").disabled=true;
+    document.getElementById("right").disabled=true;
+    document.getElementById("bottom").disabled=true;
+    document.getElementById("left").disabled=true;
+    ///////LISTA///////
+    document.getElementById("list-style-type").value="nada";
+    document.getElementById("imagen_lista").value="Sin especificar";
+    document.getElementById("list-style-position").value="nada";        
 }

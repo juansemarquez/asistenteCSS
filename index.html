@@ -21,7 +21,7 @@ function unidades(nombreSelect) {
 function numero_y_unidad(etiqueta, ident, habilitado=true) {
     if(habilitado) {    
         var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
-        cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)'>\n";
+        cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='if(esNumero(this)) {inputText(this,true);}' onblur='if(esNumero(this)) {inputText(this,true);}'>\n";
         cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)'>\n";
 	   cadena += "<option value='px'>Píxeles (px)</option>\n";
 	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
@@ -35,7 +35,7 @@ function numero_y_unidad(etiqueta, ident, habilitado=true) {
    }
    else {
        var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
-        cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='inputText(this,true)' onblur='inputText(this,true)' disabled>\n";
+        cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='if(esNumero(this)) {inputText(this,true);}' onblur='if(esNumero(this)) {inputText(this,true);}' disabled>\n";
         cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)' disabled>\n";
 	   cadena += "<option value='px'>Píxeles (px)</option>\n";
 	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
@@ -59,7 +59,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 		cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
 		cadena = cadena + "</select>\n";
 		cadena = cadena + "<label for=\"radio radio2\">Radios: </label>\n";
-		cadena = cadena + "<input type=\"number\" size=\"4\" id=\"radio\" disabled><input type=\"number\" size=\"4\" id=\"radio2\" disabled>\n";
+		cadena = cadena + "<input type=\"number\" onkeyup=\"esNumero(this)\" size=\"4\" id=\"radio\" disabled><input type=\"number\" onkeyup=\"esNumero(this)\" size=\"4\" id=\"radio2\" disabled>\n";
       cadena=cadena+"<button onclick=\"generarEsquinas(1)\">Generar esquinas</button>\n";
 	}
 	else {
@@ -76,8 +76,8 @@ function habilitarEsquinasMultiples(esUnaSola) {
 			cadena = cadena + "	<option value=\"elipse\">Elíptica</option>\n";
 			cadena = cadena + "</select>\n";
 			cadena = cadena + "<label for=\"radio" + i + " radio2" + i + "\">Radios: </label>\n";
-			cadena = cadena + "<input type=\"number\" id=\"radio" + i + "\" size=\"4\" disabled>";
-			cadena = cadena + "<input type=\"number\" id=\"radio2" + i + "\" size=\"4\" disabled><br>\n</fieldset>\n";
+			cadena = cadena + "<input type=\"number\" onkeyup=\"esNumero(this)\" id=\"radio" + i + "\" size=\"4\" disabled>";
+			cadena = cadena + "<input type=\"number\" onkeyup=\"esNumero(this)\" id=\"radio2" + i + "\" size=\"4\" disabled><br>\n</fieldset>\n";
 		}
 		cadena=cadena+"<button onclick=\"generarEsquinas(4)\">Generar esquinas</button>\n";	
 	}	
@@ -177,7 +177,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 		<input id="color_fondo" class="color {required:false,onImmediateChange:'colorFondoRGB(this);'}" onblur="habilitar_color_fondo();"><br>
 		<input type="hidden" id="RGBFondo">
 		<label for="transparencia_fondo">Transparente (0)</label>
-		<input id="transparencia_fondo" type="range" min="0" max="1" value="1" step="0.01" disabled><label for="transparencia_fondo">Opaco (1)</label><br>
+		<input id="transparencia_fondo" type="range" min="0" max="1" value="1" step="0.01" onkeyup="esNumero(this);" disabled><label for="transparencia_fondo">Opaco (1)</label><br>
 		
 		<label for="imagen_fondo">Imagen de fondo (respetar mayúsculas y minúsculas)</label>		
 		<input id="imagen_fondo" value="Sin especificar" onkeyup="habilitar_imagen_fondo();"><br>
@@ -229,7 +229,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBorde tamanoBorde_unidades">Grosor del borde: </label>
-			<input type="number" size="4" id="tamanoBorde">
+			<input type="number" onkeyup="esNumero(this);" size="4" id="tamanoBorde">
 			<select id="tamanoBorde_unidades">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -244,7 +244,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 			<input id="color_borde" class="color {onImmediateChange:'colorBordeRGB(this);',required:false}" value="Sin especificar"><br>
 			<input id="bordeRGB" type="hidden">
 			<label for="transparencia_borde">Transparente (0)</label>
-			<input id="transparencia_borde" type="range" min="0" max="1" value="1" step="0.01">
+			<input id="transparencia_borde" type="range" min="0" max="1" value="1" step="0.01" onkeyup="esNumero(this">
 			<label for="transparencia_borde">Opaco (1)</label><br>
 			<button onclick="generarBordes(1)">Generar bordes</button>		
 		</fieldset>
@@ -266,7 +266,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeARRIBA tamanoBorde_unidadesARRIBA">Grosor del borde: </label>
-			<input type="number" size="4" id="tamanoBordeARRIBA">
+			<input type="number" onkeyup="esNumero(this);" size="4" id="tamanoBordeARRIBA">
 			<select id="tamanoBorde_unidadesARRIBA">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -300,7 +300,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeDERECHA tamanoBorde_unidadesDERECHA">Grosor del borde: </label>
-			<input type="number" size="4" id="tamanoBordeDERECHA">
+			<input type="number" onkeyup="esNumero(this);" size="4" id="tamanoBordeDERECHA">
 			<select id="tamanoBorde_unidadesDERECHA">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -334,7 +334,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeABAJO tamanoBorde_unidadesABAJO">Grosor del borde: </label>
-			<input type="number" size="4" id="tamanoBordeABAJO">
+			<input type="number" onkeyup="esNumero(this);" size="4" id="tamanoBordeABAJO">
 			<select id="tamanoBorde_unidadesABAJO">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -368,7 +368,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
 				<option value="outset">"Outset"</option>
 			</select><br>
 			<label for="tamanoBordeIZQUIERDA tamanoBorde_unidadesIZQUIERDA">Grosor del borde: </label>
-			<input type="number" size="4" id="tamanoBordeIZQUIERDA">
+			<input type="number" onkeyup="esNumero(this);" size="4" id="tamanoBordeIZQUIERDA">
 			<select id="tamanoBorde_unidadesIZQUIERDA">
 				<option value='px'>Píxeles (px)</option>
 				<option value='em'>Tamaño de la "m" (em)</option>
@@ -435,7 +435,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
             <option value="auto">Automático</option>        
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
         <label for="z-index">Valor eje Z</label>
-        <input type="number" size="4" id="z-index" onkeyup="inputText(this,false)" onblur="inputText(this,false)"><br>
+        <input type="number" size="4" id="z-index" onkeyup="if(esNumero(this)) {inputText(this,false);} else {quitar('z-index');}" onblur="if(esNumero(this)) {inputText(this,false);} else {quitar('z-index');}"><br>
         <script>
             //TODO: Hardcodear esto en la versión final.             
             document.write(numero_y_unidad('Ancho','width'));
@@ -498,6 +498,10 @@ function habilitarEsquinasMultiples(esUnaSola) {
                 <option value="inside">Interno</option>
                 <option value="outside">Externo</option>	    
 		    </select>
+    </section>
+    <section id="advertNum">
+        <p>Por favor, ingresá solamente números</p>
+        <button onclick="document.getElementById('advertNum').style.display='none';">De acuerdo</button>
     </section>
 </section>
 <section id="salida">
