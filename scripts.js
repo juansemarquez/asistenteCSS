@@ -551,7 +551,7 @@ function quitarColor(cadena) {
 
 function mostrarPestania(ident) {
     //Obtengo el id de la pestaña a mostrar:    
-    var ident2=ident.substr(0,ident.indexOf("_pest"));    
+    var ident2=ident.substr(0,ident.indexOf("_pest"));
     var tab = document.getElementById(ident2);
     //Oculto todas las pestañas:
     document.getElementById("texto").style.display="none";
@@ -559,8 +559,22 @@ function mostrarPestania(ident) {
     document.getElementById("borde").style.display="none";
     document.getElementById("caja").style.display="none";
     document.getElementById("lista").style.display="none";
+    document.getElementById("texto_pest").style.color="white";
+    document.getElementById("fondo_pest").style.color="white";
+    document.getElementById("borde_pest").style.color="white";
+    document.getElementById("caja_pest").style.color="white";
+    document.getElementById("lista_pest").style.color="white";
+    document.getElementById("texto_pest").style.backgroundColor="#444444";
+    document.getElementById("fondo_pest").style.backgroundColor="#444444";
+    document.getElementById("borde_pest").style.backgroundColor="#444444";
+    document.getElementById("caja_pest").style.backgroundColor="#444444";
+    document.getElementById("lista_pest").style.backgroundColor="#444444";
+
     //Muestro a pestaña:
-    tab.style.display="block";    
+    tab.style.display="block";   
+    //Pongo fondo blanco y letra negra a la pestaña activa
+    document.getElementById(ident).style.color="#444444";
+    document.getElementById(ident).style.backgroundColor="white";
 }
 
 

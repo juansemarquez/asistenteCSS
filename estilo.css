@@ -36,9 +36,15 @@ body > .header > h1 {
     text-align: center;
     background-color: #444444;
     color: white;
-    margin: 0 2px;    
+    margin: 0 2px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;    
 }
-.pest:hover {
+#texto_pest {
+    color: #444444;
+    background-color: white;
+}
+#texto_pest:hover, #fondo_pest:hover, #borde_pest:hover, #caja_pest:hover, #lista_pest:hover {
     color: yellow;
     background-color: #AAAAAA;        
 }
