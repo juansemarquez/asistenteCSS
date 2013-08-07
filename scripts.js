@@ -94,7 +94,7 @@ function anularDecoracion(cb) {
     if(cb.checked) {
         document.getElementById("deco_2").disabled=true;
         document.getElementById("deco_3").disabled=true;
-        document.getElementById("deco_4").disabled=true;
+        //document.getElementById("deco_4").disabled=true;
         document.getElementById("deco_5").disabled=true;
         quitar('text-decoration: ');
         agregar('text-decoration: none;\n');
@@ -102,11 +102,11 @@ function anularDecoracion(cb) {
     else {
         document.getElementById("deco_2").disabled=false;
         document.getElementById("deco_3").disabled=false;
-        document.getElementById("deco_4").disabled=false;
+        //document.getElementById("deco_4").disabled=false;
         document.getElementById("deco_5").disabled=false;
         document.getElementById("deco_2").checked=false;
         document.getElementById("deco_3").checked=false;
-        document.getElementById("deco_4").checked=false;
+        //document.getElementById("deco_4").checked=false;
         document.getElementById("deco_5").checked=false;
         quitar('text-decoration: none;');        
     }
@@ -749,10 +749,7 @@ function setearInputs(regla) {
         }
         else if (valor=="overline") {
             document.getElementById("deco_3").checked=true;
-        }
-        else if (valor=="blink") {
-            document.getElementById("deco_4").checked=true;
-        }
+        }        
         else if (valor=="line-through") {
             document.getElementById("deco_5").checked=true;
         }
@@ -1172,9 +1169,11 @@ function limpiarTodo() {
     document.getElementById("may_min").value="nada";
     document.getElementById("alineacion").value="nada";
     document.getElementById("deco_2").checked=false;
+    document.getElementById("deco_2").disabled=false;
     document.getElementById("deco_3").checked=false;
-    document.getElementById("deco_4").checked=false;
+    document.getElementById("deco_3").disabled=false;
     document.getElementById("deco_5").checked=false;
+    document.getElementById("deco_5").disabled=false;
     document.getElementById("deco_6").checked=false;
     ///////FONDO///////
     document.getElementById("color_fondo").value="";
