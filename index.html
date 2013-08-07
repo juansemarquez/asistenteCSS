@@ -18,7 +18,8 @@ function unidades(nombreSelect) {
     document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
     document.write("</select>");
 }
-function numero_y_unidad(etiqueta, ident, habilitado=true) {
+function numero_y_unidad(etiqueta, ident, habilitado) {
+    if (habilitado===undefined) {habilitado=true;}
     if(habilitado) {    
         var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
         cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='if(esNumero(this)) {inputText(this,true);}' onblur='if(esNumero(this)) {inputText(this,true);}'>\n";

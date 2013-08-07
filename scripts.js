@@ -1112,7 +1112,9 @@ function bordePegarEsquinas(valor,posicion) {
     }
 } 
 
-function constaDeNumeroYUnidad(prop,valor,id="",posicion="") {
+function constaDeNumeroYUnidad(prop,valor,id,posicion) {
+    if(id===undefined) {id="";}
+    if(posicion===undefined) {posicion="";}
     if(id==""||id.length==0) {id=prop;}
     var aux = separarUnidadNumero(valor);
     if(aux[0]=="Error") {return false;}        
