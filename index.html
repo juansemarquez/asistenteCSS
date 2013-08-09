@@ -8,14 +8,22 @@
 <script>
 function unidades(nombreSelect) {
 	document.write("<select id='" + nombreSelect + "_unidades'>");
-	document.write("<option value='px'>Píxeles (px)</option>");
-	document.write("<option value='em'>Tamaño de la \"m\" (em)</option>");
-	document.write("<option value='%'>Porcentaje (%)</option>");
-	document.write("<option value='pt'>Puntos (pt)</option>");
-	document.write("<option value='cm'>Centímetros (cm)</option>");
-	document.write("<option value='in'>Pulgadas (in)</option>");
-	document.write("<option value='mm'>Milímetros (mm)</option>");	
-    document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
+	//document.write("<option value='px'>Píxeles (px)</option>");
+	//document.write("<option value='em'>Tamaño de la \"m\" (em)</option>");
+	//document.write("<option value='%'>Porcentaje (%)</option>");
+	//document.write("<option value='pt'>Puntos (pt)</option>");
+	//document.write("<option value='cm'>Centímetros (cm)</option>");
+	//document.write("<option value='in'>Pulgadas (in)</option>");
+	//document.write("<option value='mm'>Milímetros (mm)</option>");	
+    //document.write("<option value='ex'>Tamaño de la \"x\" (ex)</option>");
+    document.write("<option value='px'>px</option>");
+	document.write("<option value='em'>em</option>");
+	document.write("<option value='%'>%</option>");
+	document.write("<option value='pt'>pt</option>");
+	document.write("<option value='cm'>cm</option>");
+	document.write("<option value='in'>in</option>");
+	document.write("<option value='mm'>mm</option>");	
+    document.write("<option value='ex'>ex</option>");
     document.write("</select>");
 }
 function numero_y_unidad(etiqueta, ident, habilitado) {
@@ -24,28 +32,28 @@ function numero_y_unidad(etiqueta, ident, habilitado) {
         var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
         cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='if(esNumero(this)) {inputText(this,true);}' onblur='if(esNumero(this)) {inputText(this,true);}'>\n";
         cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)'>\n";
-	   cadena += "<option value='px'>Píxeles (px)</option>\n";
-	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
-	   cadena += "<option value='%'>Porcentaje (%)</option>\n";
-	   cadena += "<option value='pt'>Puntos (pt)</option>\n";
-	   cadena += "<option value='cm'>Centímetros (cm)</option>\n";
-	   cadena += "<option value='in'>Pulgadas (in)</option>\n";
-	   cadena += "<option value='mm'>Milímetros (mm)</option>\n";	
-       cadena += "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
-       cadena += "</select>";       
+	    cadena += "<option value='px'>px</option>";
+    	cadena += "<option value='em'>em</option>";
+	    cadena += "<option value='%'>%</option>";
+        cadena += "<option value='pt'>pt</option>";
+	    cadena += "<option value='cm'>cm</option>";
+	    cadena += "<option value='in'>in</option>";
+	    cadena += "<option value='mm'>mm</option>";	
+        cadena += "<option value='ex'>ex</option>";
+        cadena += "</select>";       
    }
    else {
        var cadena= "<label for='"+ident+"'>"+etiqueta+"</label>\n";
         cadena += "<input type='number' size='4' id='"+ident+"'  onkeyup='if(esNumero(this)) {inputText(this,true);}' onblur='if(esNumero(this)) {inputText(this,true);}' disabled>\n";
         cadena += "<select id='" + ident + "_unidades' onchange='inputText(this,true)' disabled>\n";
-	   cadena += "<option value='px'>Píxeles (px)</option>\n";
-	   cadena += "<option value='em'>Tamaño de la \"m\" (em)</option>\n";
-	   cadena += "<option value='%'>Porcentaje (%)</option>\n";
-	   cadena += "<option value='pt'>Puntos (pt)</option>\n";
-	   cadena += "<option value='cm'>Centímetros (cm)</option>\n";
-	   cadena += "<option value='in'>Pulgadas (in)</option>\n";
-	   cadena += "<option value='mm'>Milímetros (mm)</option>\n";	
-       cadena += "<option value='ex'>Tamaño de la \"x\" (ex)</option>\n";
+	   cadena += "<option value='px'>px</option>";
+       cadena += "<option value='em'>em</option>";
+	   cadena += "<option value='%'>%</option>";
+       cadena += "<option value='pt'>pt</option>";
+	   cadena += "<option value='cm'>cm</option>";
+	   cadena += "<option value='in'>in</option>";
+	   cadena += "<option value='mm'>mm</option>";	
+       cadena += "<option value='ex'>ex</option>";
        cadena += "</select>";          
    }
    return cadena;
@@ -444,15 +452,31 @@ function habilitarEsquinasMultiples(esUnaSola) {
             document.write(numero_y_unidad(' - Mínima','min-height'));            
             document.write(numero_y_unidad(' - Máxima','max-height')+'<br>');
             document.write('<fieldset><legend>Márgenes:</legend>\n');
-            document.write(numero_y_unidad('Superior: ','margin-top')+'<br>');
-            document.write(numero_y_unidad('Derecho: ','margin-right')+'<br>');
-            document.write(numero_y_unidad('Inferior: ','margin-bottom')+'<br>');
-            document.write(numero_y_unidad('Izquierdo: ','margin-left')+'</fieldset>');
+            document.write(numero_y_unidad('Superior: ','margin-top'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='marginTopAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='marginTopAuto'>Automático</label><br>");            
+            document.write(numero_y_unidad('Derecho: ','margin-right'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='marginRightAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='marginRightAuto'>Automático</label><br>");
+            document.write(numero_y_unidad('Inferior: ','margin-bottom'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='marginBottomAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='marginBottomAuto'>Automático</label><br>");
+            document.write(numero_y_unidad('Izquierdo: ','margin-left'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='marginLeftAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='marginLeftAuto'>Automático</label></fieldset>");
             document.write('<fieldset><legend>Márgenes internos (padding):</legend>\n');
-            document.write(numero_y_unidad('Superior: ','padding-top')+'<br>');
-            document.write(numero_y_unidad('Derecho: ','padding-right')+'<br>');
-            document.write(numero_y_unidad('Inferior: ','padding-bottom')+'<br>');
-            document.write(numero_y_unidad('Izquierdo: ','padding-left')+'</fieldset>');                  
+            document.write(numero_y_unidad('Superior: ','padding-top'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='paddingTopAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='paddingTopAuto'>Automático</label><br>");
+            document.write(numero_y_unidad('Derecho: ','padding-right'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='paddingRightAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='paddingRightAuto'>Automático</label><br>");
+            document.write(numero_y_unidad('Inferior: ','padding-bottom'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='paddingBottomAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='paddingBottomAuto'>Automático</label><br>");
+            document.write(numero_y_unidad('Izquierdo: ','padding-left'));
+            document.write("&nbsp;&nbsp;<input type='checkbox' id='paddingLeftAuto' onclick='activarAuto(this.id,this.checked)'>");
+            document.write("<label for='paddingLeftAuto'>Automático</label></fieldset>");
 </script>
         <fieldset><legend>Posicionamiento:</legend>
             <label for="position">Posicionamiento</label>
@@ -507,6 +531,7 @@ function habilitarEsquinasMultiples(esUnaSola) {
     <h2>Código generado:</h2>
     <textarea id="codigo" cols="80" rows="10" readonly></textarea><br>
     <button id="botonPegarCodigo" onclick="pegarCodigo()">Pegar código</button>
+    <button id="botonBorrarTodo" onclick="borrarTodo();">Borrar todo</button>
 </section>
 <section id="pegarCodigo">
     <h2>Pegar código</h2>

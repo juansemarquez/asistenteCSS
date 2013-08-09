@@ -454,6 +454,28 @@ function habilitarPosicionamiento(elemento) {
     }
 }
 
+function activarAuto(ident,esAutomatico) {
+    //Obtengo el identificador del control asociado
+    var ide;    
+    if(ident[0]=="m") { ide = "margin"; }
+    else if(ident[0]=="p") { ide = "padding"; }
+    else {return false;}
+    if(ident.indexOf("Top")!=-1) { ide += "-top"; }
+    else if(ident.indexOf("Left")!=-1) { ide += "-left"; }
+    else if(ident.indexOf("Right")!=-1) { ide += "-right"; }    
+    else if(ident.indexOf("Bottom")!=-1) { ide += "-bottom"; }    
+    else {return false;}
+    quitar(ide);
+    document.getElementById(ident).checked = esAutomatico;
+    document.getElementById(ide).disabled = esAutomatico;
+    document.getElementById(ide+"_unidades").disabled = esAutomatico;
+    document.getElementById(ide).value = "";
+    if(esAutomatico) {        
+        agregar(ide + ": auto;\n");
+    }
+    return true;              
+}
+
 /*###########################
      Funciones de lista
 ############################*/    
@@ -587,6 +609,11 @@ function esNumero(num) {
         return false;
     }
     else { return true; }
+}
+
+function borrarTodo() {
+    limpiarTodo();
+    document.getElementById("codigo").value="";
 }
 
 /*###########################
@@ -936,11 +963,21 @@ function setearInputs(regla) {
         //TODO: Validar que sea numérico
         return cajaPegarCodigo(prop,valor);        
     }
+    else if ((prop=="margin-top"||prop=="margin-left"||prop=="margin-right"||prop=="margin-bottom"||prop=="padding-top"||prop=="padding-left"||prop=="padding-right"||prop=="padding-bottom") && valor=="auto")
+    {
+        var guion = prop.indexOf("-");
+        var ident = prop.substr(0,guion);
+        ident += prop[guion+1].toUpperCase();
+        ident += prop.substr(guion+2);
+        ident += "Auto";
+        alert(ident);
+        return activarAuto(ident, true);
+    }
     else if(prop=="width"||prop=="max-width"||prop=="min-width"||
              prop=="height"||prop=="max-height"||prop=="min-height"||
              prop=="margin-top"||prop=="margin-left"||prop=="margin-right"||prop=="margin-bottom"||
              prop=="padding-top"||prop=="padding-left"||prop=="padding-right"||prop=="padding-bottom"||
-             prop=="top"||prop=="left"||prop=="right"||prop=="bottom") {
+             prop=="top"||prop=="left"||prop=="right"||prop=="bottom") {        
         return constaDeNumeroYUnidad(prop,valor);    
     }
     else if(prop=="position") {
@@ -1248,6 +1285,14 @@ function limpiarTodo() {
         document.getElementById(lugar+"bottom").value="";
         document.getElementById(lugar+"left").value="";
     }
+    activarAuto("marginTopAuto",false);
+    activarAuto("marginRightAuto",false);    
+    activarAuto("marginBottomAuto",false);    
+    activarAuto("marginLeftAuto",false);  
+    activarAuto("paddingTopAuto",false);
+    activarAuto("paddingRightAuto",false);    
+    activarAuto("paddingBottomAuto",false);    
+    activarAuto("paddingLeftAuto",false); 
     document.getElementById("top").disabled=true;
     document.getElementById("right").disabled=true;
     document.getElementById("bottom").disabled=true;
